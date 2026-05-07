@@ -1,11 +1,7 @@
-# app.py — Dashboard Streamlit Hackathon
-
-```python
 import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-import plotly.graph_objects as go
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
@@ -21,22 +17,19 @@ st.set_page_config(
 )
 
 # ======================================================
-# CORES DO PROJETO
-# Inspiradas em Ada Tech + Artemisia + Caixa
+# CORES
 # ======================================================
 
 COR_PRIMARIA = "#7B2CBF"
-COR_SECUNDARIA = "#00B4D8"
-COR_SUCESSO = "#2DC653"
-COR_ALERTA = "#D62828"
 FUNDO = "#F8F9FA"
 
 # ======================================================
-# CSS PERSONALIZADO
+# CSS
 # ======================================================
 
 st.markdown(f"""
 <style>
+
 .main {{
     background-color: {FUNDO};
 }}
@@ -52,13 +45,6 @@ h1, h2, h3 {{
     box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
 }}
 
-.bloco-storytelling {{
-    background-color: white;
-    padding: 20px;
-    border-radius: 15px;
-    border-left: 8px solid {COR_PRIMARIA};
-    margin-bottom: 20px;
-}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -69,7 +55,7 @@ h1, h2, h3 {{
 st.title("📊 Decision Intelligence")
 
 st.subheader(
-    "Sistema Inteligente de Análise de Perfil Financeiro e Consumo para Previsão de Evasão de Clientes"
+    "Sistema Inteligente de Previsão de Churn"
 )
 
 st.markdown("---")
@@ -78,27 +64,14 @@ st.markdown("---")
 # STORYTELLING
 # ======================================================
 
-st.markdown(f"""
-<div class="bloco-storytelling">
-<h3>🎯 Contexto do Problema</h3>
+st.info("""
+Empresas perdem milhares de clientes todos os anos sem compreender os sinais de evasão.
 
-Empresas perdem milhares de clientes todos os anos sem compreender os principais sinais de evasão.
-
-Este projeto utiliza:
-<ul>
-<li>Python</li>
-<li>SQL</li>
-<li>Machine Learning</li>
-<li>Estatística</li>
-<li>Decision Intelligence</li>
-</ul>
-
-para transformar dados em decisões estratégicas inteligentes.
-</div>
-""", unsafe_allow_html=True)
+Este projeto utiliza Python, SQL, Estatística e Machine Learning para transformar dados em decisões estratégicas inteligentes.
+""")
 
 # ======================================================
-# MENU LATERAL
+# MENU
 # ======================================================
 
 pagina = st.sidebar.radio(
@@ -142,7 +115,7 @@ clientes["churn"] = np.where(
 )
 
 # ======================================================
-# MODELO ML
+# MACHINE LEARNING
 # ======================================================
 
 X = clientes[[
@@ -163,6 +136,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 modelo = LogisticRegression(max_iter=1000)
+
 modelo.fit(X_train, y_train)
 
 pred = modelo.predict(X_test)
@@ -182,10 +156,13 @@ clientes["faixa_risco"] = pd.cut(
 # ======================================================
 
 def recomendacao(score):
+
     if score >= 0.7:
         return "Oferecer benefício imediato"
+
     elif score >= 0.3:
         return "Campanha de retenção"
+
     else:
         return "Cliente saudável"
 
@@ -223,8 +200,6 @@ if pagina == "Visão Geral":
 
     st.markdown("---")
 
-    # GRÁFICO CHURN
-
     fig1 = px.histogram(
         clientes,
         x="churn",
@@ -233,8 +208,6 @@ if pagina == "Visão Geral":
     )
 
     st.plotly_chart(fig1, use_container_width=True)
-
-    # GRÁFICO FREQUÊNCIA
 
     fig2 = px.box(
         clientes,
@@ -246,8 +219,6 @@ if pagina == "Visão Geral":
 
     st.plotly_chart(fig2, use_container_width=True)
 
-    # GRÁFICO GASTO
-
     fig3 = px.scatter(
         clientes,
         x="total_gasto",
@@ -257,16 +228,6 @@ if pagina == "Visão Geral":
     )
 
     st.plotly_chart(fig3, use_container_width=True)
-
-    st.markdown(f"""
-    <div class="bloco-storytelling">
-    <h3>📌 Insight Estratégico</h3>
-
-    Clientes com maior tempo sem compra e menor frequência apresentam risco significativamente maior de churn.
-
-    O modelo permite identificar esses sinais antecipadamente e apoiar ações inteligentes de retenção.
-    </div>
-    """, unsafe_allow_html=True)
 
 # ======================================================
 # PÁGINA 2 — PREDIÇÃO
@@ -284,6 +245,7 @@ elif pagina == "Predição de Churn":
     tabela = clientes.copy()
 
     if filtro != "Todos":
+
         tabela = tabela[
             tabela["faixa_risco"] == filtro
         ]
@@ -302,16 +264,6 @@ elif pagina == "Predição de Churn":
         f"{accuracy:.2%}"
     )
 
-    st.markdown(f"""
-    <div class="bloco-storytelling">
-    <h3>🧠 Decision Intelligence</h3>
-
-    O sistema identifica clientes com maior probabilidade de evasão e sugere ações estratégicas personalizadas.
-    
-    Isso permite decisões preventivas orientadas por dados.
-    </div>
-    """, unsafe_allow_html=True)
-
 # ======================================================
 # PÁGINA 3 — SIMULADOR
 # ======================================================
@@ -319,10 +271,6 @@ elif pagina == "Predição de Churn":
 elif pagina == "Simulador Estratégico":
 
     st.header("🧪 Simulador Estratégico de Churn")
-
-    st.write(
-        "Altere os indicadores do cliente e observe como o risco muda em tempo real."
-    )
 
     gasto = st.slider(
         "💰 Total Gasto",
@@ -346,11 +294,13 @@ elif pagina == "Simulador Estratégico":
     )
 
     novo_cliente = pd.DataFrame({
+
         "total_gasto": [gasto],
         "total_pedidos": [pedidos],
         "dias_sem_compra": [dias],
         "ticket_medio": [gasto/pedidos],
         "frequencia_compra": [pedidos/(dias+1)]
+
     })
 
     prob = modelo.predict_proba(novo_cliente)[0][1]
@@ -361,23 +311,16 @@ elif pagina == "Simulador Estratégico":
     )
 
     if prob >= 0.7:
+
         st.error("⚠️ Cliente com ALTO risco de evasão")
 
     elif prob >= 0.3:
+
         st.warning("⚠️ Cliente com MÉDIO risco")
 
     else:
+
         st.success("✅ Cliente com BAIXO risco")
-
-    st.markdown(f"""
-    <div class="bloco-storytelling">
-    <h3>🚀 Simulação Estratégica</h3>
-
-    Esta funcionalidade permite testar cenários e apoiar decisões estratégicas em tempo real.
-
-    O painel transforma dados em ações inteligentes de retenção.
-    </div>
-    """, unsafe_allow_html=True)
 
 # ======================================================
 # RODAPÉ
@@ -385,35 +328,23 @@ elif pagina == "Simulador Estratégico":
 
 st.markdown("---")
 
-st.markdown(
-    """
-    ### 👩‍💻 Desenvolvedoras
+st.markdown("""
 
-    Projeto desenvolvido para o Hackathon de Dados.
+### 👩‍💻 Desenvolvedoras
 
-    Sistema Inteligente de Análise de Perfil
+Projeto desenvolvido para o Hackathon de Dados.
+
+Sistema Inteligente de Análise de Perfil
 Financeiro, Consumo e Geração de Insights Baseado em Dados.
 
 
-    ### 🤝 Agradecimentos
 
-    - Elas+ Tech
-    - Ada Tech
-    - Artemisia
-    - Caixa
-    - Fundo Socioambiental
-    """
-)
+### 🤝 Agradecimentos
 
-```
+- Elas+ Tech
+- Ada Tech
+- Artemisia
+- Caixa
+- Fundo Socioambiental
 
-# requirements.txt
-
-```txt
-streamlit
-pandas
-numpy
-plotly
-scikit-learn
-matplotlib
-```
+""")
