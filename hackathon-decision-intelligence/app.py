@@ -4,98 +4,148 @@ import numpy as np
 import plotly.express as px
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 
-# ======================================================
+# ==========================================================
 # CONFIGURAÇÃO DA PÁGINA
-# ======================================================
+# ==========================================================
 
 st.set_page_config(
     page_title="Decision Intelligence",
     page_icon="📊",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# ======================================================
-# CORES
-# ======================================================
+# ==========================================================
+# CSS PREMIUM
+# ==========================================================
 
-COR_PRIMARIA = "#7B2CBF"
-FUNDO = "#F8F9FA"
-
-# ======================================================
-# CSS
-# ======================================================
-
-st.markdown(f"""
+st.markdown("""
 <style>
 
-.main {{
-    background-color: {FUNDO};
-}}
+.main {
+    background-color: #0F172A;
+    color: white;
+}
 
-h1, h2, h3 {{
-    color: {COR_PRIMARIA};
-}}
+section[data-testid="stSidebar"] {
+    background-color: #111827;
+}
 
-.stMetric {{
-    background-color: white;
-    padding: 15px;
-    border-radius: 15px;
-    box-shadow: 0px 2px 8px rgba(0,0,0,0.08);
-}}
+h1, h2, h3, h4 {
+    color: #F8FAFC;
+}
+
+p, label, div {
+    color: #E2E8F0;
+}
+
+.metric-card {
+    background: linear-gradient(135deg, #1E293B, #111827);
+    padding: 25px;
+    border-radius: 18px;
+    border: 1px solid #334155;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.25);
+}
+
+.storytelling {
+    background: linear-gradient(135deg, #312E81, #1E1B4B);
+    padding: 25px;
+    border-radius: 18px;
+    border-left: 8px solid #38BDF8;
+    margin-bottom: 25px;
+}
+
+.footer {
+    background-color: #111827;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 50px;
+    border: 1px solid #334155;
+}
+
+.kpi {
+    background-color: #1E293B;
+    padding: 20px;
+    border-radius: 16px;
+    text-align: center;
+    border: 1px solid #334155;
+}
 
 </style>
 """, unsafe_allow_html=True)
 
-# ======================================================
+# ==========================================================
 # TÍTULO
-# ======================================================
+# ==========================================================
 
-st.title("📊 Decision Intelligence")
+st.title("📊 Decision Intelligence Platform")
 
 st.subheader(
-    "Sistema Inteligente de Previsão de Churn"
+    "Sistema Inteligente de Análise de Perfil Financeiro e Consumo para Previsão de Evasão de Clientes"
 )
 
-st.markdown("---")
+# ==========================================================
+# STORYTELLING EXECUTIVO
+# ==========================================================
 
-# ======================================================
-# STORYTELLING
-# ======================================================
+st.markdown("""
+<div class="storytelling">
 
-st.info("""
-Empresas perdem milhares de clientes todos os anos sem compreender os sinais de evasão.
+## 🎯 Contexto Estratégico
 
-Este projeto utiliza Python, SQL, Estatística e Machine Learning para transformar dados em decisões estratégicas inteligentes.
-""")
+O churn de clientes representa um dos maiores desafios para empresas orientadas a dados.
 
-# ======================================================
+Este projeto utiliza:
+- Python
+- SQL
+- Estatística
+- Machine Learning
+- Decision Intelligence
+
+para prever risco de evasão, identificar padrões comportamentais e apoiar decisões estratégicas de retenção.
+
+A solução transforma dados em inteligência acionável.
+
+</div>
+""", unsafe_allow_html=True)
+
+# ==========================================================
 # MENU
-# ======================================================
+# ==========================================================
 
 pagina = st.sidebar.radio(
     "📌 Navegação",
     [
-        "Visão Geral",
-        "Predição de Churn",
-        "Simulador Estratégico"
+        "Executive Overview",
+        "Perfil Financeiro",
+        "Inteligência SQL",
+        "Machine Learning",
+        "Decision Intelligence",
+        "Inclusão Financeira"
     ]
 )
 
-# ======================================================
+# ==========================================================
 # BASE SIMULADA
-# ======================================================
+# ==========================================================
 
 np.random.seed(42)
 
-n = 1000
+n = 1500
 
 clientes = pd.DataFrame({
+
     "cliente": range(1, n+1),
-    "total_gasto": np.random.randint(50, 5000, n),
+
+    "total_gasto": np.random.randint(100, 5000, n),
+
     "total_pedidos": np.random.randint(1, 20, n),
+
     "dias_sem_compra": np.random.randint(1, 365, n)
+
 })
 
 clientes["ticket_medio"] = (
@@ -114,9 +164,9 @@ clientes["churn"] = np.where(
     0
 )
 
-# ======================================================
+# ==========================================================
 # MACHINE LEARNING
-# ======================================================
+# ==========================================================
 
 X = clientes[[
     "total_gasto",
@@ -142,6 +192,8 @@ modelo.fit(X_train, y_train)
 pred = modelo.predict(X_test)
 
 accuracy = accuracy_score(y_test, pred)
+precision = precision_score(y_test, pred)
+recall = recall_score(y_test, pred)
 
 clientes["score_risco"] = modelo.predict_proba(X)[:,1]
 
@@ -151,9 +203,9 @@ clientes["faixa_risco"] = pd.cut(
     labels=["Baixo","Médio","Alto"]
 )
 
-# ======================================================
+# ==========================================================
 # RECOMENDAÇÕES
-# ======================================================
+# ==========================================================
 
 def recomendacao(score):
 
@@ -168,19 +220,19 @@ def recomendacao(score):
 
 clientes["recomendacao"] = clientes["score_risco"].apply(recomendacao)
 
-# ======================================================
-# PÁGINA 1 — VISÃO GERAL
-# ======================================================
+# ==========================================================
+# PÁGINA 1
+# ==========================================================
 
-if pagina == "Visão Geral":
+if pagina == "Executive Overview":
 
-    st.header("📈 Visão Geral Estratégica")
+    st.header("📈 Executive Overview")
 
     col1, col2, col3, col4 = st.columns(4)
 
     col1.metric(
-        "Total Clientes",
-        f"{len(clientes):,}"
+        "Clientes",
+        f"{len(clientes):,}".replace(",", ".")
     )
 
     col2.metric(
@@ -190,12 +242,12 @@ if pagina == "Visão Geral":
 
     col3.metric(
         "Receita Total",
-        f"R$ {clientes['total_gasto'].sum():,.0f}"
+        f"R$ {clientes['total_gasto'].sum():,.0f}".replace(",", ".")
     )
 
     col4.metric(
         "Ticket Médio",
-        f"R$ {clientes['ticket_medio'].mean():.2f}"
+        f"R$ {clientes['ticket_medio'].mean():,.2f}".replace(",", ".")
     )
 
     st.markdown("---")
@@ -204,7 +256,8 @@ if pagina == "Visão Geral":
         clientes,
         x="churn",
         color="churn",
-        title="Distribuição de Churn"
+        title="Distribuição de Churn",
+        color_discrete_sequence=["#38BDF8"]
     )
 
     st.plotly_chart(fig1, use_container_width=True)
@@ -219,58 +272,124 @@ if pagina == "Visão Geral":
 
     st.plotly_chart(fig2, use_container_width=True)
 
+    st.success("""
+    Insight Estratégico:
+    
+    Clientes com baixa frequência de compra e maior tempo sem interação apresentam risco significativamente maior de evasão.
+    """)
+
+# ==========================================================
+# PÁGINA 2
+# ==========================================================
+
+elif pagina == "Perfil Financeiro":
+
+    st.header("💳 Perfil Financeiro e Consumo")
+
     fig3 = px.scatter(
         clientes,
         x="total_gasto",
         y="dias_sem_compra",
         color="faixa_risco",
-        title="Perfil Financeiro e Risco"
+        size="ticket_medio",
+        title="Perfil Financeiro e Risco de Churn"
     )
 
     st.plotly_chart(fig3, use_container_width=True)
 
-# ======================================================
-# PÁGINA 2 — PREDIÇÃO
-# ======================================================
+    st.info("""
+    Clientes com menor recorrência de compra possuem maior probabilidade de churn.
+    
+    O comportamento financeiro influencia diretamente o risco de evasão.
+    """)
 
-elif pagina == "Predição de Churn":
+# ==========================================================
+# PÁGINA 3
+# ==========================================================
 
-    st.header("🤖 Predição Inteligente de Churn")
+elif pagina == "Inteligência SQL":
 
-    filtro = st.selectbox(
-        "Filtrar Risco",
-        ["Todos", "Alto", "Médio", "Baixo"]
-    )
+    st.header("🧠 Inteligência SQL")
 
-    tabela = clientes.copy()
+    st.code("""
 
-    if filtro != "Todos":
+WITH perfil AS (
 
-        tabela = tabela[
-            tabela["faixa_risco"] == filtro
-        ]
+SELECT
+    customer_unique_id,
+    total_gasto,
+    total_pedidos,
+    churn
 
-    st.dataframe(
-        tabela[[
-            "cliente",
-            "score_risco",
-            "faixa_risco",
-            "recomendacao"
-        ]]
-    )
+FROM clientes
 
-    st.metric(
-        "Accuracy do Modelo",
+)
+
+SELECT
+    churn,
+    AVG(total_gasto) AS gasto_medio,
+    AVG(total_pedidos) AS pedidos_medio
+
+FROM perfil
+
+GROUP BY churn
+
+""", language="sql")
+
+    st.success("""
+    O SQL foi utilizado para segmentações estratégicas, análise de churn e construção de indicadores executivos.
+    """)
+
+# ==========================================================
+# PÁGINA 4
+# ==========================================================
+
+elif pagina == "Machine Learning":
+
+    st.header("🤖 Machine Learning")
+
+    col1, col2, col3 = st.columns(3)
+
+    col1.metric(
+        "Accuracy",
         f"{accuracy:.2%}"
     )
 
-# ======================================================
-# PÁGINA 3 — SIMULADOR
-# ======================================================
+    col2.metric(
+        "Precision",
+        f"{precision:.2%}"
+    )
 
-elif pagina == "Simulador Estratégico":
+    col3.metric(
+        "Recall",
+        f"{recall:.2%}"
+    )
 
-    st.header("🧪 Simulador Estratégico de Churn")
+    matriz = confusion_matrix(y_test, pred)
+
+    fig4 = px.imshow(
+        matriz,
+        text_auto=True,
+        title="Matriz de Confusão"
+    )
+
+    st.plotly_chart(fig4, use_container_width=True)
+
+    st.info("""
+    O modelo preditivo consegue identificar antecipadamente clientes com maior probabilidade de evasão.
+    """)
+
+# ==========================================================
+# PÁGINA 5
+# ==========================================================
+
+elif pagina == "Decision Intelligence":
+
+    st.header("🧪 Simulador Estratégico")
+
+    st.write("""
+    Altere os indicadores abaixo para simular cenários estratégicos de churn.
+    """)
 
     gasto = st.slider(
         "💰 Total Gasto",
@@ -280,7 +399,7 @@ elif pagina == "Simulador Estratégico":
     )
 
     pedidos = st.slider(
-        "🛒 Quantidade de Pedidos",
+        "🛒 Pedidos",
         1,
         20,
         3
@@ -312,39 +431,71 @@ elif pagina == "Simulador Estratégico":
 
     if prob >= 0.7:
 
-        st.error("⚠️ Cliente com ALTO risco de evasão")
+        st.error("""
+        Cliente com ALTO risco de evasão.
+        
+        Recomendação:
+        oferecer retenção imediata.
+        """)
 
     elif prob >= 0.3:
 
-        st.warning("⚠️ Cliente com MÉDIO risco")
+        st.warning("""
+        Cliente com MÉDIO risco.
+        
+        Recomendação:
+        campanhas de relacionamento.
+        """)
 
     else:
 
-        st.success("✅ Cliente com BAIXO risco")
+        st.success("""
+        Cliente com BAIXO risco.
+        
+        Perfil saudável.
+        """)
 
-# ======================================================
+# ==========================================================
+# PÁGINA 6
+# ==========================================================
+
+elif pagina == "Inclusão Financeira":
+
+    st.header("🌍 Inclusão Financeira")
+
+    st.markdown("""
+    Este projeto também possui foco em impacto social.
+
+    A análise preditiva permite:
+    - identificar clientes vulneráveis;
+    - reduzir evasão financeira;
+    - apoiar retenção inteligente;
+    - gerar estratégias mais inclusivas.
+
+    A solução conecta tecnologia, dados e impacto social.
+    """)
+
+# ==========================================================
 # RODAPÉ
-# ======================================================
-
-st.markdown("---")
+# ==========================================================
 
 st.markdown("""
+<div class="footer">
 
-### 👩‍💻 Desenvolvedoras
+<h3>👩‍💻 Desenvolvedoras</h3>
 
-Projeto desenvolvido para o Hackathon de Dados.
+Projeto desenvolvido para o Hackathon Decision Intelligence.
 
-Sistema Inteligente de Análise de Perfil
-Financeiro, Consumo e Geração de Insights Baseado em Dados.
+<br>
 
+<h3>🤝 Parceiros e Apoiadores</h3>
 
+Elas+ Tech • Ada Tech • Artemisia • Caixa • Fundo Socioambiental
 
-### 🤝 Agradecimentos
+<br><br>
 
-- Elas+ Tech
-- Ada Tech
-- Artemisia
-- Caixa
-- Fundo Socioambiental
+Tecnologias:
+Python • SQL • Machine Learning • Streamlit • Scikit-Learn • Plotly
 
-""")
+</div>
+""", unsafe_allow_html=True)
