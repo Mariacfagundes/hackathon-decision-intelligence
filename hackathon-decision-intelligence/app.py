@@ -227,7 +227,6 @@ elif capitulo == "5. Recomendações e Autoras":
         Os dados revelaram achados importantes: o tempo de inatividade é o sinal mais crítico de risco, clientes com contrato mensal são os mais vulneráveis ao cancelamento, e a probabilidade de churn pouco varia com o valor gasto, o que significa que nenhum perfil de cliente está automaticamente protegido apenas por gastar mais.
         
         Mais do que uma análise de dados, este projeto é uma ferramenta de antecipação que converte padrões invisíveis de comportamento em ações visíveis e planejamentos de longo prazo
-
         </p>
     </div>
     """, unsafe_allow_html=True)
