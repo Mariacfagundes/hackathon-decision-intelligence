@@ -88,8 +88,7 @@ with st.sidebar:
 # CAPÍTULO 1: CONTEXTO E INTENÇÃO
 # =========================================================
 if capitulo == "1. Contexto e Intenção":
-    st.title("Decisão inteligente: prevendo cancelamentos e apoiando decisões estratégicas de retenção
-")
+    st.title("Decisão inteligente: prevendo cancelamentos e apoiando decisões estratégicas de retenção")
     st.subheader("Contexto e Intenção")
 
     st.markdown("""
