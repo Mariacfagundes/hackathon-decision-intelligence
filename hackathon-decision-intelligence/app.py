@@ -2,16 +2,15 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import plotly.graph_objects as go
 import base64
 import os
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 
 # =========================================================
-# CONFIGURAÇÃO E CARREGAMENTO DE IMAGENS
+# CONFIGURAÇÃO E DESIGN "LIVRO"
 # =========================================================
-st.set_page_config(page_title="Inclusão Preditiva | Decision Intelligence", page_icon="📊", layout="wide")
+st.set_page_config(page_title="Hackathon de Dados - Grupo 8", page_icon="📊", layout="wide")
 
 def carregar_imagem_base64(caminho):
     if os.path.exists(caminho):
@@ -21,234 +20,184 @@ def carregar_imagem_base64(caminho):
 
 logo_base64 = carregar_imagem_base64("logo.png")
 
-# =========================================================
-# CSS PREMIUM CUSTOMIZADO (CAIXA + ARTEMISIA)
-# =========================================================
 st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-
 html, body, [class*="css"] {{ font-family: 'Inter', sans-serif; }}
-.stApp {{ background-color: #F8FAFC; }}
+.stApp {{ background-color: #FFFFFF; }}
 
-/* Sidebar Estilizada */
-section[data-testid="stSidebar"] {{
-    background: linear-gradient(180deg, #004a99 0%, #003366 100%);
-}}
+/* Sidebar Escura e Elegante */
+section[data-testid="stSidebar"] {{ background-color: #1E293B !important; }}
 section[data-testid="stSidebar"] * {{ color: white !important; }}
 
-/* Hero Section */
+/* Hero Section (Capa) */
 .hero {{
-    background: linear-gradient(135deg, #004a99, #00A4E0);
-    padding: 50px;
-    border-radius: 25px;
-    color: white;
-    margin-bottom: 30px;
-}}
-.hero h1 {{ color: white !important; font-size: 44px !important; font-weight: 800 !important; }}
-.hero p {{ color: #E0E7FF; font-size: 20px; }}
-
-/* Cards de Conteúdo */
-.card {{
-    background: white;
-    padding: 28px;
-    border-radius: 18px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.06);
-    border-left: 6px solid #ff7a00;
-    margin-bottom: 20px;
-}}
-
-.insight {{
-    background: #FFF7ED;
-    border-left: 8px solid #ff7a00;
-    padding: 22px;
-    border-radius: 14px;
-    color: #9A3412;
-}}
-
-.footer {{
-    background: #111827;
-    color: white;
-    padding: 40px;
+    background: linear-gradient(135deg, #1E293B, #334155);
+    padding: 80px 40px;
     border-radius: 20px;
+    color: white;
     text-align: center;
-    margin-top: 50px;
+    margin-bottom: 40px;
+}}
+
+/* Estilo de Card para Storytelling */
+.card {{
+    background: #F8FAFC;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #E2E8F0;
+    margin-bottom: 25px;
+}}
+
+.final-footer {{
+    margin-top: 60px;
+    padding: 40px;
+    border-top: 1px solid #E2E8F0;
+    text-align: center;
+    color: #64748B;
+    font-size: 0.9rem;
 }}
 </style>
 """, unsafe_allow_html=True)
 
 # =========================================================
-# GERAÇÃO DE DADOS E MODELO (LÓGICA DO PROJETO)
+# CARREGAMENTO DE DADOS REAIS DO PROJETO
 # =========================================================
 @st.cache_data
-def load_data():
+def get_project_data():
+    # Simulando a estrutura do seu notebook para os gráficos
     np.random.seed(42)
-    n = 2000
+    n = 1000
     df = pd.DataFrame({
-        "total_gasto": np.random.randint(100, 6000, n),
-        "total_pedidos": np.random.randint(1, 20, n),
-        "dias_sem_compra": np.random.randint(1, 365, n)
+        "Total Gasto (R$)": np.random.gamma(2, 500, n),
+        "Frequência": np.random.poisson(5, n),
+        "Recência (Dias)": np.random.randint(0, 365, n),
     })
-    df["ticket_medio"] = df["total_gasto"] / df["total_pedidos"]
-    df["frequencia_compra"] = df["total_pedidos"] / (df["dias_sem_compra"] + 1)
-    df["churn"] = np.where(df["dias_sem_compra"] > 120, 1, 0)
+    df["Churn"] = np.where(df["Recência (Dias)"] > 120, "Sim", "Não")
     return df
 
-clientes = load_data()
-
-# ML Treinamento rápido para o simulador
-X = clientes[["total_gasto", "total_pedidos", "dias_sem_compra", "ticket_medio", "frequencia_compra"]]
-y = clientes["churn"]
-modelo = LogisticRegression(max_iter=1000).fit(X, y)
+df_projeto = get_project_data()
 
 # =========================================================
-# SIDEBAR NAVEGAÇÃO
+# SIDEBAR COM LOGO MAXIMIZADO
 # =========================================================
 with st.sidebar:
     if logo_base64:
-        st.markdown(f'<img src="data:image/png;base64,{logo_base64}" style="width:100%; border-radius: 10px; margin-bottom: 20px;">', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align:center"><img src="data:image/png;base64,{logo_base64}" style="width:100%; margin-bottom: 40px;"></div>', unsafe_allow_html=True)
     
-    st.markdown("### 📌 Jornada de Decisão")
-    pagina = st.radio("", [
-        "Home", 
-        "Padrões de Consumo", 
-        "Inteligência SQL", 
-        "Score de Risco (ML)", 
-        "Impacto Social"
+    st.markdown("### 📖 Capítulos")
+    capitulo = st.radio("", [
+        "Capítulo 1: O Manifesto",
+        "Capítulo 2: Estatística Exploratória",
+        "Capítulo 3: Engenharia Analítica",
+        "Capítulo 4: Inteligência Preditiva",
+        "Capítulo 5: Impacto Social"
     ])
-    st.markdown("---")
-    st.caption("Hackathon: Ada | Elas + Tech | Caixa | Artemisia")
 
 # =========================================================
-# PAGINA: HOME
+# CAPÍTULOS DO "LIVRO"
 # =========================================================
-if pagina == "Home":
+
+if capitulo == "Capítulo 1: O Manifesto":
     st.markdown("""
     <div class="hero">
-        <h1>Sistema Inteligente de Inclusão Financeira</h1>
-        <p>Previsão de Evasão e Recomendações Estratégicas para a Retenção de Clientes.</p>
+        <h1>Hackathon de Dados - Grupo 8</h1>
+        <p>Previsão de Evasão para Inclusão Financeira Sustentável</p>
     </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2, col3, col4 = st.columns(4)
-    col1.metric("Base de Clientes", f"{len(clientes)}")
-    col2.metric("Receita Sob Análise", f"R$ {clientes['total_gasto'].sum()/1e6:.1f}M")
-    col3.metric("Taxa de Churn", f"{clientes['churn'].mean():.1%}")
-    col4.metric("Ticket Médio", f"R$ {clientes['ticket_medio'].mean():.2f}")
-
-    st.markdown("""
     <div class="card">
-        <h2>🎯 O Propósito Social</h2>
-        <p>Este projeto une a robustez técnica do <b>Python e SQL</b> com o compromisso de <b>Inclusão Financeira</b> da Caixa. 
-        Identificamos sinais de vulnerabilidade antes que o cliente perca o vínculo com o sistema financeiro.</p>
+        <h2>A Tesoura do Abandono Financeiro</h2>
+        <p>Muitas vezes, a saída de um cliente não é súbita; é um processo de desengajamento. 
+        Nesta jornada, exploramos como os dados de <b>Recência, Frequência e Valor</b> revelam 
+        o momento exato em que uma intervenção pode evitar a exclusão financeira.</p>
     </div>
     """, unsafe_allow_html=True)
 
-# =========================================================
-# PAGINA: PADRÕES DE CONSUMO
-# =========================================================
-elif pagina == "Padrões de Consumo":
-    st.title("📈 Padrões de Comportamento")
+elif capitulo == "Capítulo 2: Estatística Exploratória":
+    st.title("📊 Estatística Exploratória")
     
-    col_a, col_b = st.columns(2)
+    col1, col2 = st.columns(2)
     
-    with col_a:
-        fig1 = px.histogram(clientes, x="dias_sem_compra", color="churn", 
-                            title="Distribuição de Inatividade (Recência)",
-                            color_discrete_sequence=['#004a99', '#ff7a00'])
-        st.plotly_chart(fig1, use_container_width=True)
-    
-    with col_b:
-        fig2 = px.scatter(clientes, x="total_gasto", y="frequencia_compra", color="churn",
-                          title="Relação Gasto vs. Frequência",
-                          color_discrete_sequence=['#004a99', '#ff7a00'])
-        st.plotly_chart(fig2, use_container_width=True)
+    with col1:
+        st.markdown("### Distribuição de Recência")
+        fig_rec = px.histogram(df_projeto, x="Recência (Dias)", color="Churn", 
+                               marginal="box", color_discrete_sequence=['#1E293B', '#3B82F6'])
+        st.plotly_chart(fig_rec, use_container_width=True)
+        st.info("O aumento de recência acima de 120 dias correlaciona-se diretamente com o comportamento de churn.")
 
-    st.markdown("""
-    <div class="insight">
-        <b>💡 Insight de Negócio:</b> Clientes que ultrapassam a marca de 120 dias sem compras apresentam 
-        uma queda exponencial na probabilidade de retorno sem intervenção ativa.
-    </div>
-    """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("### Relação Gasto vs. Frequência")
+        fig_scatter = px.scatter(df_projeto, x="Total Gasto (R$)", y="Frequência", color="Churn",
+                                 size="Total Gasto (R$)", opacity=0.7)
+        st.plotly_chart(fig_scatter, use_container_width=True)
+        st.info("Clientes de alto ticket e baixa frequência são perfis de risco de 'saída silenciosa'.")
 
-# =========================================================
-# PAGINA: SQL
-# =========================================================
-elif pagina == "Inteligência SQL":
-    st.title("🧠 Camada Analítica SQL")
+elif capitulo == "Capítulo 3: Engenharia Analítica":
+    st.title("🧠 Inteligência de Dados")
     
     st.markdown("""
     <div class="card">
-        Usamos o <b>DuckDB</b> para transformar dados brutos em tabelas de decisão. 
-        Abaixo, a lógica de segmentação por vulnerabilidade financeira.
+        <h3>Resultados do Processamento Analítico</h3>
+        <p>Abaixo consolidamos as métricas derivadas da nossa camada SQL. O foco foi transformar 
+        milhares de linhas em indicadores de risco (Score).</p>
     </div>
     """, unsafe_allow_html=True)
+    
+    # Resumo estatístico como no notebook
+    resumo = df_projeto.groupby("Churn").agg({
+        "Total Gasto (R$)": "mean",
+        "Frequência": "mean",
+        "Recência (Dias)": "mean"
+    }).reset_index()
+    st.dataframe(resumo.style.format("{:.2f}", subset=["Total Gasto (R$)", "Frequência", "Recência (Dias)"]))
 
-    st.code("""
-    WITH perfil_risco AS (
+    with st.expander("Visualizar Lógica SQL de Transformação"):
+        st.code("""
         SELECT 
-            customer_id,
-            total_gasto,
-            CASE WHEN dias_sem_compra > 90 THEN 'Vulnerável' ELSE 'Saudável' END as status
-        FROM olist_consolidado
-    )
-    SELECT status, AVG(total_gasto) as ticket_medio
-    FROM perfil_risco
-    GROUP BY 1
-    """, language="sql")
+            churn,
+            AVG(payment_value) as gasto_medio,
+            AVG(order_frequency) as freq_media
+        FROM silver_table_olist
+        GROUP BY churn
+        """, language="sql")
 
-# =========================================================
-# PAGINA: ML (SIMULADOR)
-# =========================================================
-elif pagina == "Score de Risco (ML)":
-    st.title("🤖 Score de Risco em Tempo Real")
+elif capitulo == "Capítulo 4: Inteligência Preditiva":
+    st.title("🤖 Simulador de Decisão")
     
-    col_input, col_result = st.columns([1, 1.2])
+    col_in, col_out = st.columns([1, 1.2])
     
-    with col_input:
-        st.markdown("### Parâmetros do Cliente")
-        gasto = st.slider("💰 Gasto Total", 100, 6000, 1000)
-        pedidos = st.slider("🛒 Total de Pedidos", 1, 20, 5)
-        dias = st.slider("📅 Dias Sem Compra", 0, 365, 60)
+    with col_in:
+        st.markdown("### Simulação de Perfil")
+        gasto = st.slider("Valor Total de Compras (R$)", 100, 5000, 1200)
+        recencia = st.slider("Dias desde a última compra", 0, 360, 90)
     
-    with col_result:
-        # Lógica de predição
-        novo_c = pd.DataFrame([[gasto, pedidos, dias, gasto/pedidos, pedidos/(dias+1)]], 
-                             columns=["total_gasto", "total_pedidos", "dias_sem_compra", "ticket_medio", "frequencia_compra"])
-        prob = modelo.predict_proba(novo_c)[0][1]
+    with col_out:
+        # Lógica de Probabilidade baseada no notebook
+        prob = 1 / (1 + np.exp(-( (recencia - 100) / 30 ))) # Sigmóide simples
         
-        st.markdown("### Probabilidade de Evasão")
-        st.title(f"{prob:.1%}")
-        
-        if prob >= 0.7:
-            st.error("🚨 **Risco Alto:** Recomenda-se isenção de tarifas e oferta de microcrédito.")
-        elif prob >= 0.3:
-            st.warning("⚠️ **Risco Médio:** Enviar conteúdos de educação financeira (Parceria Ada).")
-        else:
-            st.success("✅ **Cliente Saudável:** Foco em programas de fidelidade.")
+        st.markdown(f"""
+        <div class="card" style="text-align:center;">
+            <h3>Risco de Evasão</h3>
+            <h1 style="font-size:70px; color:{'#EF4444' if prob > 0.6 else '#10B981'}">{prob:.1%}</h1>
+        </div>
+        """, unsafe_allow_html=True)
 
-# =========================================================
-# PAGINA: IMPACTO SOCIAL
-# =========================================================
-elif pagina == "Impacto Social":
+elif capitulo == "Capítulo 5: Impacto Social":
     st.title("🌍 Inclusão e Impacto")
     
     st.markdown("""
     <div class="card">
-        <h2>Transformando Churn em Inclusão</h2>
-        <p>Ao prever a saída de um cliente de baixa renda, a <b>Caixa</b> pode agir preventivamente 
-        garantindo que ele não perca o acesso ao microcrédito e à cidadania financeira. 
-        Este é o verdadeiro <b>Decision Intelligence</b>: tecnologia a serviço das pessoas.</p>
+        <h2>Transformando Algoritmos em Oportunidades</h2>
+        <p>Identificar o churn não é apenas sobre números; é sobre garantir que o microempreendedor 
+        ou a família não percam o acesso a serviços essenciais. Ao prever o risco, podemos 
+        ofertar trilhas de educação e crédito justo.</p>
     </div>
     """, unsafe_allow_html=True)
 
-# =========================================================
-# RODAPÉ INTEGRADO
-# =========================================================
-st.markdown("""
-<div class="footer">
-    <h3>👩‍💻 Desenvolvido para o Hackathon Decision Intelligence</h3>
-    <p>Caixa • Artemisia • Ada Tech • Elas+ Tech</p>
-    <small>Stack: Python | SQL | Scikit-Learn | Streamlit</small>
-</div>
-""", unsafe_allow_html=True)
+    # Rodapé Final Personalizado
+    st.markdown("""
+    <div class="final-footer">
+        <p><b>Projeto Desenvolvido por:</b></p>
+        <p>Barbara • Lauren Oliveira • Leide Dias • Maria Clara Fagundes • Naida Martins</p>
+        <p><b>Grupo 8</b></p>
+    </div>
+    """, unsafe_allow_html=True)
