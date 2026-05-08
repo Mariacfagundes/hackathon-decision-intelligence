@@ -2,7 +2,7 @@
 
 ---
 
-> Projeto de conclusão de curso desenvolvido na **Hackathon Elas+ Tech**, promovida pela **Ada Tech** em parceria com a **Caixa Econômica Federal** e a **Artemísia**.
+> Projeto de conclusão de curso desenvolvido na **Hackathon Elas+ Tech**, promovida pela **Ada Tech** em parceria com a **Caixa Econômica Federal** e a **Artemisia**.
 
 ---
 
@@ -195,7 +195,7 @@ Projeto desenvolvido com 💜 pelo **Grupo 8** da Hackathon Elas+ Tech:
 | Lauren Oliveira |
 | Leide Dias |
 | Maria Clara Fagundes |
-| Naida Martins |
+| Maida Martins |
 
 ---
 
