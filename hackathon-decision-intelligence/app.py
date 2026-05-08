@@ -7,21 +7,18 @@ import plotly.graph_objects as go
 # =========================================================
 # CONFIGURAÇÃO DE LAYOUT E ESTILO PROFISSIONAL
 # =========================================================
-import streamlit as st
 
-# Configuração de Página
+# =========================================================
+# CONFIGURAÇÃO DE LAYOUT E ESTILO (ESTÉTICA DA FOTO)
+# =========================================================
 st.set_page_config(page_title="Decision Intelligence - Grupo 8", layout="wide")
 
-# =========================================================
-# CSS PARA REPLICAR A ESTÉTICA DA IMAGEM
-# =========================================================
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
     html, body, [class*="css"] { font-family: 'Inter', sans-serif; }
     .stApp { background-color: #F8FAFC; }
 
-    /* Cabeçalho Azul Marinho */
     .custom-header {
         background-color: #0F172A;
         padding: 35px;
@@ -32,7 +29,6 @@ st.markdown("""
         align-items: center;
     }
 
-    /* Card Branco de Contexto */
     .main-card {
         background-color: white;
         padding: 35px;
@@ -41,7 +37,6 @@ st.markdown("""
         margin-bottom: 30px;
     }
 
-    /* Cards Coloridos (O que o projeto revela) */
     .risk-card {
         background-color: white;
         padding: 25px;
@@ -53,7 +48,6 @@ st.markdown("""
     .border-purple { border-top: 6px solid #A855F7; }
     .border-blue { border-top: 6px solid #3B82F6; }
 
-    /* Rodapé Azul (Onde isso impacta) */
     .impact-card {
         background-color: #EFF6FF;
         padding: 20px;
@@ -62,6 +56,7 @@ st.markdown("""
         align-items: center;
         gap: 15px;
         border: 1px solid #DBEAFE;
+        margin-bottom: 10px;
     }
     .number-circle {
         background-color: #1E40AF;
@@ -79,96 +74,90 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # =========================================================
-# CAPÍTULO 1: SEU TEXTO INTEGRAL COM A ESTÉTICA DA FOTO
+# NAVEGAÇÃO LATERAL
 # =========================================================
+with st.sidebar:
+    try:
+        st.image("logo.png", use_container_width=True)
+    except:
+        st.markdown("<h2 style='text-align: center; color: white;'>Decision Intelligence</h2>", unsafe_allow_html=True)
+    
+    st.markdown("---")
+    capitulo = st.radio("Capítulos do Projeto", [
+        "1. Contexto e Intenção",
+        "2. Diagnóstico Estatístico (EDA)",
+        "3. Probabilidade Condicional",
+        "4. Inteligência Preditiva (ML)",
+        "5. Recomendações e Autoras"
+    ])
 
-# 1. HEADER (Seu Título e Subtítulo Exatos)
-st.markdown(f"""
-    <div class="custom-header">
-        <div>
-            <h1 style='margin:0; font-size: 1.8rem;'>Decisão inteligente: prevendo cancelamentos e apoiando decisões estratégicas de retenção</h1>
-            <p style='margin:0; opacity: 0.8;'>Contexto e Intenção</p>
-        </div>
-        <div style="background-color: #1E293B; padding: 15px; border-radius: 8px; border-left: 4px solid #3B82F6;">
-            <small style="color: #94A3B8;">PROJETO</small><br>
-            <b style="color: white;">Grupo 8 - Decision Intelligence</b>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
-
-# 2. SEU TEXTO DE INTRODUÇÃO INTEGRAL
-with st.container():
-    st.markdown('<div class="main-card">', unsafe_allow_html=True)
+# =========================================================
+# CAPÍTULO 1: SEU TEXTO INTEGRAL + ESTÉTICA DA FOTO
+# =========================================================
+if capitulo == "1. Contexto e Intenção":
     st.markdown(f"""
-        <p style='font-size: 1.15rem; color: #334155; line-height: 1.8;'>
-        Todo mês, empresas perdem clientes sem entender exatamente o porquê. A taxa de Churn não acontece de repente, 
-        ela se desenvolve em silêncio, deixando rastros invisíveis no comportamento de consumo antes de se tornar uma perda real. 
-        <br><br>
-        Ao analisar o comportamento de milhares de consumidores, vemos que padrões se repetem. Alguns sinais existem e saber 
-        enxergá-los e interpretá-los é o que separa uma empresa que reage de uma empresa que antecipa.
-        <br><br>
-        E é exatamente isso que este projeto propõe. Combinando dados reais dos ecossistemas de e-commerce e telecomunicações, 
-        nosso dashboard interativo revela quais clientes estão em risco de cancelamento, por que isso está acontecendo e 
-        onde a estrutura de gastos aponta para novas demandas de inclusão.
-        </p>
-    """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-# 3. O QUE O PROJETO REVELA (Seus itens exatos nos cards da foto)
-st.markdown("### 🔍 O que o projeto revela")
-col_r1, col_r2, col_r3 = st.columns(3)
-
-with col_r1:
-    st.markdown("""
-        <div class="risk-card border-red">
-            <h4 style="color:#EF4444; margin-top:0;">📊 Perfis de Risco</h4>
-            <p style="font-size: 0.95rem; color: #475569;">clientes classificados em faixas de risco — Crítico, Alto, Médio e Baixo — com base em seu score de probabilidade de churn, permitindo priorizar ações de retenção.</p>
+        <div class="custom-header">
+            <div>
+                <h1 style='margin:0; font-size: 1.8rem;'>Decisão inteligente: prevendo cancelamentos e apoiando decisões estratégicas de retenção</h1>
+                <p style='margin:0; opacity: 0.8;'>Contexto e Intenção</p>
+            </div>
+            <div style="background-color: #1E293B; padding: 15px; border-radius: 8px; border-left: 4px solid #3B82F6;">
+                <small style="color: #94A3B8;">PROJETO</small><br>
+                <b style="color: white;">Grupo 8 - Decision Intelligence</b>
+            </div>
         </div>
     """, unsafe_allow_html=True)
 
-with col_r2:
-    st.markdown("""
-        <div class="risk-card border-purple">
-            <h4 style="color:#A855F7; margin-top:0;">💡 Recomendações estratégicas</h4>
-            <p style="font-size: 0.95rem; color: #475569;">para cada perfil de risco, o sistema sugere uma ação concreta, desde ofertas agressivas de retenção até campanhas de engajamento preventivo.</p>
-        </div>
-    """, unsafe_allow_html=True)
+    with st.container():
+        st.markdown('<div class="main-card">', unsafe_allow_html=True)
+        st.markdown(f"""
+            <p style='font-size: 1.15rem; color: #334155; line-height: 1.8;'>
+            Todo mês, empresas perdem clientes sem entender exatamente o porquê. A taxa de Churn não acontece de repente, 
+            ela se desenvolve em silêncio, deixando rastros invisíveis no comportamento de consumo antes de se tornar uma perda real. 
+            <br><br>
+            Ao analisar o comportamento de milhares de consumidores, vemos que padrões se repetem. Alguns sinais existem e saber 
+            enxergá-los e interpretá-los é o que separa uma empresa que reage de uma empresa que antecipa.
+            <br><br>
+            E é exatamente isso que este projeto propõe. Combinando dados reais dos ecossistemas de e-commerce e telecomunicações, 
+            nosso dashboard interativo revela quais clientes estão em risco de cancelamento, por que isso está acontecendo e 
+            onde a estrutura de gastos aponta para novas demandas de inclusão.
+            </p>
+        """, unsafe_allow_html=True)
+        st.markdown('</div>', unsafe_allow_html=True)
 
-with col_r3:
-    st.markdown("""
-        <div class="risk-card border-blue">
-            <h4 style="color:#3B82F6; margin-top:0;">🔮 Visão preditiva</h4>
-            <p style="font-size: 0.95rem; color: #475569;">um modelo de Machine Learning treinado para prever quais clientes estão prestes a cancelar, com base em frequência de compra, valor gasto e tempo de inatividade.</p>
-        </div>
-    """, unsafe_allow_html=True)
+    st.markdown("### 🔍 O que o projeto revela")
+    col_r1, col_r2, col_r3 = st.columns(3)
+    with col_r1:
+        st.markdown('<div class="risk-card border-red"><h4 style="color:#EF4444; margin-top:0;">📊 Perfis de Risco</h4><p style="font-size: 0.95rem; color: #475569;">clientes classificados em faixas de risco — Crítico, Alto, Médio e Baixo — com base em seu score de probabilidade de churn, permitindo priorizar ações de retenção.</p></div>', unsafe_allow_html=True)
+    with col_r2:
+        st.markdown('<div class="risk-card border-purple"><h4 style="color:#A855F7; margin-top:0;">💡 Recomendações estratégicas</h4><p style="font-size: 0.95rem; color: #475569;">para cada perfil de risco, o sistema sugere uma ação concreta, desde ofertas agressivas de retenção até campanhas de engajamento preventivo.</p></div>', unsafe_allow_html=True)
+    with col_r3:
+        st.markdown('<div class="risk-card border-blue"><h4 style="color:#3B82F6; margin-top:0;">🔮 Visão preditiva</h4><p style="font-size: 0.95rem; color: #475569;">um modelo de Machine Learning treinado para prever quais clientes estão prestes a cancelar, com base em frequência de compra, valor gasto e tempo de inatividade.</p></div>', unsafe_allow_html=True)
 
-# 4. ONDE ISSO IMPACTA (Seus itens exatos no rodapé da foto)
-st.markdown("<br>### ⭐ Onde isso impacta", unsafe_allow_html=True)
-col_i1, col_i2, col_i3 = st.columns(3)
+    st.markdown("<br>### ⭐ Onde isso impacta", unsafe_allow_html=True)
+    col_i1, col_i2, col_i3 = st.columns(3)
+    with col_i1:
+        st.markdown('<div class="impact-card"><div class="number-circle">01</div><div><b>Gestão Estratégica</b><br><small>permite que empresas priorizem recursos de retenção com base em evidências preditivas...</small></div></div>', unsafe_allow_html=True)
+    with col_i2:
+        st.markdown('<div class="impact-card"><div class="number-circle">02</div><div><b>Redução de perdas</b><br><small>ao identificar clientes em risco antes do cancelamento, empresas podem agir preventivamente...</small></div></div>', unsafe_allow_html=True)
+    with col_i3:
+        st.markdown('<div class="impact-card"><div class="number-circle">03</div><div><b>Decisões orientadas por dados</b><br><small>transforma análises complexas em recomendações simples e acionáveis...</small></div></div>', unsafe_allow_html=True)
 
-with col_i1:
-    st.markdown("""
-        <div class="impact-card">
-            <div class="number-circle">01</div>
-            <div><b>Gestão Estratégica</b><br><small>permite que empresas priorizem recursos de retenção com base em evidências preditivas sabendo exatamente quais clientes precisam de atenção imediata e qual abordagem usar..</small></div>
-        </div>
-    """, unsafe_allow_html=True)
+# =========================================================
+# CAPÍTULOS SEGUINTES (CORREÇÃO DA SINTAXE)
+# =========================================================
+elif capitulo == "2. Diagnóstico Estatístico (EDA)":
+    st.title("Diagnóstico Estatístico (EDA)")
+    st.info("Espaço para os gráficos de análise exploratória.")
 
-with col_i2:
-    st.markdown("""
-        <div class="impact-card">
-            <div class="number-circle">02</div>
-            <div><b>Redução de perdas</b><br><small>ao identificar clientes em risco antes do cancelamento, empresas podem agir preventivamente e evitar a perda de receita associada ao churn.</small></div>
-        </div>
-    """, unsafe_allow_html=True)
+elif capitulo == "3. Probabilidade Condicional":
+    st.title("Probabilidade Condicional")
 
-with col_i3:
-    st.markdown("""
-        <div class="impact-card">
-            <div class="number-circle">03</div>
-            <div><b>Decisões orientadas por dados</b><br><small>transforma análises complexas de comportamento em recomendações simples e acionáveis, tornando a inteligência de dados acessível para times de negócio.</small></div>
-        </div>
-    """, unsafe_allow_html=True)
+elif capitulo == "4. Inteligência Preditiva (ML)":
+    st.title("Machine Learning")
+
+elif capitulo == "5. Recomendações e Autoras":
+    st.title("Conclusão e Equipe")
     
 # =========================================================
 # CAPÍTULO 2: EDA E ESTATÍSTICA
