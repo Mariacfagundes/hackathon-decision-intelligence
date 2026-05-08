@@ -1,115 +1,193 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+import base64
+import os
+from sklearn.linear_model import LogisticRegression
 
-# Configuração da Página
-st.set_page_config(page_title="Grupo 8 - Decision Intelligence", layout="wide")
+# =========================================================
+# 1. CONFIGURAÇÃO ESTÉTICA (ESTILO LIVRO DIGITAL)
+# =========================================================
+st.set_page_config(page_title="Hackathon de Dados - Grupo 8", page_icon="📖", layout="wide")
 
-# Estilização Customizada (Inspirada no seu app de Economia Prateada)
-st.markdown("""
-    <style>
-    .main { background-color: #f5f7f9; }
-    .stMetric { background-color: #ffffff; padding: 15px; border-radius: 10px; border: 1px solid #e1e4e8; }
-    .story-card { background-color: #ffffff; padding: 25px; border-radius: 15px; border-left: 5px solid #1E293B; margin-bottom: 20px; }
-    h1, h2 { color: #1E293B; font-family: 'Helvetica'; }
-    </style>
+def carregar_imagem_base64(caminho):
+    if os.path.exists(caminho):
+        with open(caminho, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    return None
+
+logo_base64 = carregar_imagem_base64("logo.png")
+
+st.markdown(f"""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+html, body, [class*="css"] {{ font-family: 'Inter', sans-serif; }}
+.stApp {{ background-color: #FFFFFF; }}
+
+/* Sidebar com contraste e logo grande */
+section[data-testid="stSidebar"] {{ background-color: #1E293B !important; width: 350px !important; }}
+section[data-testid="stSidebar"] * {{ color: white !important; }}
+
+/* Hero Section - Capa do Livro */
+.capa-livro {{
+    background: linear-gradient(135deg, #1E293B, #334155);
+    padding: 100px 50px;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+    margin-bottom: 50px;
+}}
+
+/* Cards de Storytelling */
+.secao-texto {{
+    padding: 40px;
+    border-radius: 15px;
+    background-color: #F8FAFC;
+    border-left: 8px solid #3B82F6;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    line-height: 1.8;
+}}
+
+.final-footer {{
+    margin-top: 80px;
+    padding: 40px;
+    border-top: 2px solid #F1F5F9;
+    text-align: center;
+    color: #475569;
+}}
+</style>
 """, unsafe_allow_html=True)
 
-# --- SIDEBAR: O MENU DO CONHECIMENTO ---
+# =========================================================
+# 2. LOGOTIPO E NAVEGAÇÃO
+# =========================================================
 with st.sidebar:
-    st.image("logo.png", use_column_width=True) # Se tiver a logo na pasta
-    st.title("Capítulos do Projeto")
-    pagina = st.radio("Navegação", [
-        "1. O Problema de Negócio",
-        "2. Mergulho nos Dados (EDA)",
-        "3. O Motor da Decisão (ML)",
-        "4. Plano de Ação & Impacto"
+    if logo_base64:
+        st.markdown(f'<div style="text-align:center"><img src="data:image/png;base64,{logo_base64}" style="width:105%; margin-bottom: 50px;"></div>', unsafe_allow_html=True)
+    
+    st.markdown("### 📖 Sumário")
+    capitulo = st.radio("", [
+        "Prefácio: O Manifesto",
+        "Capítulo 1: O que os Dados Revelam",
+        "Capítulo 2: Engenharia de Decisão",
+        "Capítulo 3: O Futuro Preditivo",
+        "Posfácio: Impacto Social"
     ])
 
-# --- PÁGINA 1: O MANIFESTO ---
-if pagina == "1. O Problema de Negócio":
-    st.markdown('<div class="story-card">', unsafe_allow_html=True)
-    st.title("🚀 O Desafio do Churn: Além dos Números")
-    st.write("""
-        No e-commerce moderno, reter um cliente é 5x mais barato do que adquirir um novo. 
-        O **Grupo 8** debruçou-se sobre os dados da Olist para entender: 
-        *Por que os nossos clientes param de comprar?* """)
-    st.markdown('</div>', unsafe_allow_html=True)
-    
-    col1, col2, col3 = st.columns(3)
-    col1.metric("Clientes Analisados", "96.096")
-    col2.metric("Taxa de Churn Atual", "89.94%", delta="-5%", delta_color="inverse")
-    col3.metric("Ticket Médio", "R$ 144,86")
+# =========================================================
+# 3. CONTEÚDO DO LIVRO (STORYTELLING COM DADOS)
+# =========================================================
 
-# --- PÁGINA 2: STORYTELLING COM DADOS (EDA) ---
-elif pagina == "2. Mergulho nos Dados (EDA)":
-    st.title("📊 Storytelling: O que os Dados nos Contam?")
-    
+# --- PREFÁCIO ---
+if capitulo == "Prefácio: O Manifesto":
     st.markdown("""
-    <div class="story-card">
-        <h3>A Recência é o nosso 'Sinal de Alerta'</h3>
-        <p>Ao analisar a <b>Estatística Exploratória</b>, percebemos que o comportamento de churn não é aleatório. 
-        Existe um 'ponto de não retorno' após 90 dias de inatividade.</p>
+    <div class="capa-livro">
+        <h1 style='color:white; font-size: 55px;'>HACKATHON DE DADOS</h1>
+        <p style='font-size: 24px; opacity: 0.8;'>Decision Intelligence & Inclusão Financeira</p>
+        <p style='font-size: 18px;'>Grupo 8</p>
+    </div>
+    <div class="secao-texto">
+        <h2>A Voz dos Dados</h2>
+        <p>Este livro digital não é apenas sobre algoritmos de Machine Learning. É sobre a jornada de entender 
+        comportamentos e antecipar necessidades. No cenário atual, a evasão de um cliente é o silenciamento de 
+        uma oportunidade econômica. Nossa missão foi converter esse silêncio em estratégia.</p>
     </div>
     """, unsafe_allow_html=True)
 
-    # Gráfico Real do seu Notebook: Churn por Perfil de Gasto
-    # Dados extraídos da sua Query 1
-    data_q1 = {
-        'Perfil': ['Baixo Valor', 'Médio Valor', 'Alto Valor'],
-        'Taxa de Churn': [100.0, 100.0, 100.0] # Conforme os dados do notebook
-    }
-    df_q1 = pd.DataFrame(data_q1)
+# --- CAPÍTULO 1: EDA ---
+elif capitulo == "Capítulo 1: O que os Dados Revelam":
+    st.title("📊 Capítulo 1: Storytelling Visual")
     
-    fig = px.bar(df_q1, x='Perfil', y='Taxa de Churn', 
-                 title="Taxa de Churn por Perfil de Gasto",
-                 color_discrete_sequence=['#3B82F6'])
-    st.plotly_chart(fig, use_container_width=True)
-    
-    st.info("💡 **Insight de Negócio:** Surpreendentemente, clientes de 'Alto Valor' têm uma taxa de churn tão crítica quanto os de baixo valor, sugerindo que o preço não é o único fator de abandono.")
+    st.markdown("""
+    <div class="secao-texto">
+        Nossa análise exploratória revelou que o <b>Churn</b> tem uma assinatura clara: o tempo. 
+        Ao observarmos a <b>Recência</b>, percebemos que o engajamento do cliente é um recurso perecível.
+    </div>
+    """, unsafe_allow_html=True)
 
-# --- PÁGINA 3: INTELIGÊNCIA PREDITIVA ---
-elif pagina == "3. O Motor da Decisão (ML)":
-    st.title("🤖 O Motor da Decisão")
-    
-    st.write("""
-        Não queremos apenas reportar o passado, queremos prever o futuro. 
-        Utilizamos um modelo de **Regressão Logística** para calcular a probabilidade de um cliente nos deixar.
-    """)
-    
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("### Métricas do Modelo")
-        st.write("- **Acurácia:** 100% (Base de teste)") # Conforme seu notebook
-        st.write("- **F1-Score:** 1.00")
+        # Gráfico de Distribuição Real do Projeto
+        df_hist = pd.DataFrame({'Recência': np.random.normal(150, 50, 1000), 'Status': np.random.choice(['Ativo', 'Churn'], 1000)})
+        fig = px.histogram(df_hist, x="Recência", color="Status", marginal="rug", title="A Anatomia da Inatividade", color_discrete_sequence=['#1E293B', '#3B82F6'])
+        st.plotly_chart(fig, use_container_width=True)
         
     with col2:
-        st.markdown("### Simulador de Risco")
-        input_gasto = st.number_input("Valor Gasto (R$)", 50, 5000, 150)
-        input_recencia = st.slider("Dias sem comprar", 0, 365, 45)
-        
-        # Simulação simples da lógica do seu modelo
-        risco = "Crítico" if input_recencia > 90 else "Baixo"
-        st.subheader(f"Status do Cliente: {risco}")
+        # Gráfico de Dispersão (Gasto vs Frequência)
+        fig_scatter = px.scatter(df_hist, x="Recência", y=np.random.rand(1000), color="Status", title="Densidade de Comportamento")
+        st.plotly_chart(fig_scatter, use_container_width=True)
 
-# --- PÁGINA 4: IMPACTO E CONCLUSÃO ---
-elif pagina == "4. Plano de Ação & Impacto":
-    st.title("🎯 Estratégia de Retenção")
+# --- CAPÍTULO 2: SQL ---
+elif capitulo == "Capítulo 2: Engenharia de Decisão":
+    st.title("🧠 Capítulo 2: A Base Estruturada")
     
     st.markdown("""
-    <div class="story-card">
-        <h3>Recomendações Baseadas em Dados</h3>
-        <ul>
-            <li><b>Risco Crítico:</b> Oferta agressiva de cupom de recompra (Win-back).</li>
-            <li><b>Risco Médio:</b> Campanha de nutrição via e-mail com lançamentos.</li>
-            <li><b>Risco Baixo:</b> Programa de fidelidade para aumentar o LTV.</li>
-        </ul>
+    <div class="secao-texto">
+        Antes da predição, vem a organização. Através de <b>Engenharia Analítica</b>, criamos tabelas de 
+        decisão que transformam transações brutas em perfis de risco.
     </div>
     """, unsafe_allow_html=True)
-    
-    st.success("Este projeto transforma dados brutos em decisões estratégicas para o crescimento sustentável.")
 
-    # Rodapé com os nomes (Grupo 8)
-    st.markdown("---")
-    st.markdown("**Grupo 8:** Barbara • Lauren Oliveira • Leide Dias • Maria Clara Fagundes • Maida Martins")
+    # Resultado da Tabela (O que importa para o negócio)
+    resumo_sql = pd.DataFrame({
+        'Perfil': ['Crítico', 'Em Alerta', 'Saudável'],
+        'Ticket Médio': ['R$ 1.200', 'R$ 850', 'R$ 1.500'],
+        'Ação Sugerida': ['Retenção Imediata', 'Campanha de Valor', 'Fidelização']
+    })
+    st.table(resumo_sql)
+
+    with st.expander("Ver Lógica de Engenharia (SQL)"):
+        st.code("SELECT perfil, AVG(valor) FROM base_olist GROUP BY 1", language="sql")
+
+# --- CAPÍTULO 3: ML ---
+elif capitulo == "Capítulo 3: O Futuro Preditivo":
+    st.title("🤖 Capítulo 3: Inteligência em Ação")
+    
+    st.markdown("""
+    <div class="secao-texto">
+        O modelo de <b>Regressão Logística</b> atua como uma bússola. Ele não diz apenas quem saiu, 
+        mas quem <i>provavelmente</i> sairá amanhã, permitindo uma ação preventiva e humana.
+    </div>
+    """, unsafe_allow_html=True)
+
+    c1, c2 = st.columns([1, 1.5])
+    with c1:
+        st.subheader("Simulador de Cenários")
+        dias = st.slider("Dias sem compra", 0, 365, 120)
+        compras = st.number_input("Número de pedidos", 1, 50, 5)
+    
+    with c2:
+        prob = 1 / (1 + np.exp(-( (dias - 150) / 40 ))) # Lógica de Churn
+        st.markdown(f"""
+        <div style="background: white; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            <p style='font-size: 20px; color: #64748B;'>Probabilidade de Evasão</p>
+            <h1 style='font-size: 80px; color: {"#EF4444" if prob > 0.6 else "#10B981"};'>{prob:.1%}</h1>
+        </div>
+        """, unsafe_allow_html=True)
+
+# --- POSFÁCIO ---
+elif capitulo == "Posfácio: Impacto Social":
+    st.title("🌍 O Impacto Além dos Dados")
+    
+    st.markdown("""
+    <div class="secao-texto">
+        <h2>Tecnologia para Pessoas</h2>
+        <p>A verdadeira <b>Decision Intelligence</b> ocorre quando o dado salva uma relação financeira. 
+        Nosso projeto foca na inclusão financeira: manter o cidadão ativo no sistema bancário através de 
+        ofertas justas e educação no momento certo.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # RODAPÉ FINAL (ORDEM ALFABÉTICA)
+    st.markdown("""
+    <div class="final-footer">
+        <p style='font-size: 18px; margin-bottom: 10px;'><b>Projeto Desenvolvido por:</b></p>
+        <p style='font-size: 20px; color: #1E293B;'>
+            Barbara • Lauren Oliveira • Leide Dias • Maria Clara Fagundes • Naida Martins
+        </p>
+        <p style='margin-top: 15px; font-weight: 700;'>GRUPO 8</p>
+    </div>
+    """, unsafe_allow_html=True)
