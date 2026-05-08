@@ -104,7 +104,9 @@ if capitulo == "1. Contexto e Intenção":
     """, unsafe_allow_html=True)
 
     st.markdown('<p class="section-title">O que o projeto revela</p>', unsafe_allow_html=True)
+    
     st.write("A partir da análise do comportamento dos clientes, o dashboard entrega três camadas de inteligência:")
+    
     
     col1, col2 = st.columns(2)
     with col1:
@@ -114,6 +116,7 @@ if capitulo == "1. Contexto e Intenção":
         st.markdown("**Visão preditiva:**  um modelo de Machine Learning treinado para prever quais clientes estão prestes a cancelar, com base em frequência de compra, valor gasto e tempo de inatividade.")
 
     st.markdown('<p class="section-title">Onde isso impacta</p>', unsafe_allow_html=True)
+    
     st.write("1. **Gestão Estratégica:** Permite que empresas priorizem recursos de retenção com base em evidências preditivas sabendo exatamente quais clientes precisam de atenção imediata e qual abordagem usar..")
     st.write("2. **Redução de perdas:** ao identificar clientes em risco antes do cancelamento, empresas podem agir preventivamente e evitar a perda de receita associada ao churn.")
     st.write("3. **Decisões orientadas por dados:** transforma análises complexas de comportamento em recomendações simples e acionáveis, tornando a inteligência de dados acessível para times de negócio.")
