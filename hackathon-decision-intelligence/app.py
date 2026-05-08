@@ -143,6 +143,7 @@ elif capitulo == "2. Diagnóstico Estatístico (EDA)":
     st.markdown("""
      <div style="font-size: 1.1rem; margin-top: 10px;">
         <b style="color: #31333F;">Análise Estratégica:</b> 
+        
         <p>
         O gráfico revela que clientes classificados como Críticos e Em Alerta estão distribuídos ao longo de toda a faixa de inatividade, independentemente do valor gasto. 
         Isso indica que o tempo sem comprar é um sinal de risco mais determinante do que o quanto o cliente gastou, reforçando a necessidade de ações de retenção baseadas em comportamento temporal, não apenas em valor financeiro.
@@ -167,17 +168,17 @@ elif capitulo == "3. Probabilidade Condicional":
     st.plotly_chart(fig_p, use_container_width=True)
     
     st.markdown("""
-    <div class="story-analysis">
-        <b>Análise Estratégica:</b> 
-        
+    <div style="font-size: 1.1rem; margin-top: 10px;">
+     <b style="color: #31333F;"<b>Análise Estratégica:</b> 
+     
+        <p>
         A análise de probabilidade condicional revela que clientes com contrato mensal apresentam a maior probabilidade de churn (85%), seguidos por clientes sem suporte técnico (76%) e com fibra óptica (69%). 
         Curiosamente, o boleto bancário apresenta probabilidade menor (52%), sugerindo que a forma de pagamento isolada não é o fator mais crítico.
- 
+        <p>
         A principal recomendação é incentivar a migração de contratos mensais para planos anuais, já que esse é o perfil com maior risco de cancelamento identificado nos dados.
     </div>
     """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
+  
 # =========================================================
 # CAPÍTULO 4: MACHINE LEARNING
 # =========================================================
@@ -202,19 +203,19 @@ elif capitulo == "4. Inteligência Preditiva (ML)":
         st.plotly_chart(fig_ml, use_container_width=True)
         
     st.markdown("""
-    <div class="story-analysis">
-        <b>Análise Estratégica:</b>
+    <div style="font-size: 1.1rem; margin-top: 10px;">
+        <b style="color: #31333F;"<b>Análise Estratégica:</b>
         
+        <p>
        O modelo de Regressão Logística atingiu um recall de 81,5%, ou seja, consegue identificar corretamente mais de 8 em cada 10 clientes que realmente cancelariam. 
        A variável mais determinante foi a Recência (tempo desde a última interação), seguida pelo tipo de contrato. 
        Gasto mensal, serviço de streaming e idade tiveram impacto menor. 
-        
+        <p>
        Isso reforça a recomendação central do projeto: 
        empresas devem monitorar o tempo de inatividade dos clientes como principal sinal de alerta, e priorizar ações de retenção para quem possui contratos mensais.
     </div>
     """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
+    
 # =========================================================
 # CAPÍTULO 5: CONCLUSÃO E EQUIPE
 # =========================================================
