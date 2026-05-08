@@ -220,14 +220,14 @@ elif capitulo == "5. Recomendações e Autoras":
     
     st.markdown("""
     <div class="content-card">
-        <p style="font-size: 1.1rem;">
+    <p style="font-size: 1.1rem;">
         A Decisão Inteligente aplicada neste projeto transforma dados de comportamento em decisões concretas de retenção.
         Com um modelo preditivo capaz de identificar mais de 8 em cada 10 clientes em risco, um score de churn individualizado e recomendações estratégicas por perfil, este sistema oferece às empresas algo valioso: a capacidade de agir antes que o cancelamento aconteça.
-        
+        <br><br>
         Os dados revelaram achados importantes: o tempo de inatividade é o sinal mais crítico de risco, clientes com contrato mensal são os mais vulneráveis ao cancelamento, e a probabilidade de churn pouco varia com o valor gasto, o que significa que nenhum perfil de cliente está automaticamente protegido apenas por gastar mais.
-        
+        <br><br>
         Mais do que uma análise de dados, este projeto é uma ferramenta de antecipação que converte padrões invisíveis de comportamento em ações visíveis e planejamentos de longo prazo
-        </p>
+    </p>
     </div>
     """, unsafe_allow_html=True)
     
