@@ -229,7 +229,7 @@ elif capitulo == "5. Recomendações e Autoras":
     for i, nome in enumerate(equipe):
         with [c1, c2, c3, c4, c5][i]:
             st.write(f"**{nome}**")
-            st.caption("Engenharia de Dados")
+            st.caption("Analista de Dados")
             
     st.markdown("---")
     st.write("Patrocínio e Parcerias: Ada+tech | Artemisia | CAIXA")
