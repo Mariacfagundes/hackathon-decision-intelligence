@@ -117,7 +117,7 @@ if capitulo == "1. Contexto e Intenção":
 
     st.markdown('<p class="section-title">Onde isso impacta</p>', unsafe_allow_html=True)
     
-    st.write("1. **Gestão Estratégica:** Permite que empresas priorizem recursos de retenção com base em evidências preditivas sabendo exatamente quais clientes precisam de atenção imediata e qual abordagem usar..")
+    st.write("1. **Gestão Estratégica:** permite que empresas priorizem recursos de retenção com base em evidências preditivas sabendo exatamente quais clientes precisam de atenção imediata e qual abordagem usar..")
     st.write("2. **Redução de perdas:** ao identificar clientes em risco antes do cancelamento, empresas podem agir preventivamente e evitar a perda de receita associada ao churn.")
     st.write("3. **Decisões orientadas por dados:** transforma análises complexas de comportamento em recomendações simples e acionáveis, tornando a inteligência de dados acessível para times de negócio.")
 
@@ -141,11 +141,12 @@ elif capitulo == "2. Diagnóstico Estatístico (EDA)":
     st.plotly_chart(fig_eda, use_container_width=True)
     
     st.markdown("""
-     <div style="font-size: 1.1rem; margin-top: 10px;">
-        <b style="color: #31333F;">Análise Estratégica:</b> 
-        
+     <div style="font-size: 1.1rem; margin-top: 10px; line-height: 1.6;">
+        <strong style="color: #31333F;">Análise Estratégica:</strong>
+        <p>
         O gráfico revela que clientes classificados como Críticos e Em Alerta estão distribuídos ao longo de toda a faixa de inatividade, independentemente do valor gasto. 
         Isso indica que o tempo sem comprar é um sinal de risco mais determinante do que o quanto o cliente gastou, reforçando a necessidade de ações de retenção baseadas em comportamento temporal, não apenas em valor financeiro.
+        </p>
     </div>
     """, unsafe_allow_html=True)
    
@@ -166,14 +167,13 @@ elif capitulo == "3. Probabilidade Condicional":
     st.plotly_chart(fig_p, use_container_width=True)
     
     st.markdown("""
-    <div style="font-size: 1.1rem; margin-top: 10px;">
-     <b style="color: #31333F;"<b>Análise Estratégica:</b> 
-     
-        
+    <div style="font-size: 1.1rem; margin-top: 10px; line-height: 1.6;">
+        <strong style="color: #31333F;">Análise Estratégica:</strong><br>
         A análise de probabilidade condicional revela que clientes com contrato mensal apresentam a maior probabilidade de churn (85%), seguidos por clientes sem suporte técnico (76%) e com fibra óptica (69%). 
         Curiosamente, o boleto bancário apresenta probabilidade menor (52%), sugerindo que a forma de pagamento isolada não é o fator mais crítico.
-        
+        <p>
         A principal recomendação é incentivar a migração de contratos mensais para planos anuais, já que esse é o perfil com maior risco de cancelamento identificado nos dados.
+        </p>
     </div>
     """, unsafe_allow_html=True)
   
@@ -201,17 +201,15 @@ elif capitulo == "4. Inteligência Preditiva (ML)":
         st.plotly_chart(fig_ml, use_container_width=True)
         
     st.markdown("""
-    <div style="font-size: 1.1rem; margin-top: 10px;">
-        <b style="color: #31333F;"<b>Análise Estratégica:</b>
-        
-        
-       O modelo de Regressão Logística atingiu um recall de 81,5%, ou seja, consegue identificar corretamente mais de 8 em cada 10 clientes que realmente cancelariam. 
-       A variável mais determinante foi a Recência (tempo desde a última interação), seguida pelo tipo de contrato. 
-       Gasto mensal, serviço de streaming e idade tiveram impacto menor. 
+    <div style="font-size: 1.1rem; margin-top: 10px; line-height: 1.6;">
+        <strong style="color: #31333F;">Análise Estratégica:</strong><br>
+        O modelo de Regressão Logística atingiu um recall de 81,5%, ou seja, consegue identificar corretamente mais de 8 em cada 10 clientes que realmente cancelariam. 
+        A variável mais determinante foi a Recência (tempo desde a última interação), seguida pelo tipo de contrato. 
+        Gasto mensal, serviço de streaming e idade tiveram impacto menor. 
         <p>
-       Isso reforça a recomendação central do projeto: 
-       empresas devem monitorar o tempo de inatividade dos clientes como principal sinal de alerta, e priorizar ações de retenção para quem possui contratos mensais.
-    </div>
+        Isso reforça a recomendação central do projeto: 
+        empresas devem monitorar o tempo de inatividade dos clientes como principal sinal de alerta, e priorizar ações de retenção para quem possui contratos mensais.
+        </p>
     """, unsafe_allow_html=True)
     
 # =========================================================
