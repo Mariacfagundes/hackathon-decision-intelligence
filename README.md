@@ -165,7 +165,7 @@ O dashboard foi desenvolvido em Streamlit com visualizações interativas, apres
 - Importância das variáveis do modelo
 - Recomendações estratégicas de retenção
 
-[Acessar Dashboard](#) *(link a ser inserido)*
+[Acessar Dashboard](#) *(https://hackathon-decision-intelligence-bwapo78dvkpaxuqfbesbt2.streamlit.app/#executive-overview)*
 
 ---
 
