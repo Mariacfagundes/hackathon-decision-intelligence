@@ -88,44 +88,45 @@ with st.sidebar:
 # CAPÍTULO 1: CONTEXTO E INTENÇÃO
 # =========================================================
 if capitulo == "1. Contexto e Intenção":
-    st.title("Sistema Inteligente de Análise de Perfil Financeiro e Consumo")
-    st.subheader("Decision Intelligence e Inclusão Financeira . Contexto e Intenção")
+    st.title("Decisão inteligente: prevendo cancelamentos e apoiando decisões estratégicas de retenção
+")
+    st.subheader("Contexto e Intenção")
 
     st.markdown("""
     <div class="content-card">
         <p style="font-size: 1.15rem; line-height: 1.8;">
-        Imagine o cenário financeiro atual: a evasão de clientes não é apenas uma métrica de perda de faturamento, mas um sinal silencioso de desengajamento que precede a desbancarização e a exclusão social. Esse ciclo de abandono não é repentino — ele deixa rastros nos dados antes de se consolidar.
+        Todo mês, empresas perdem clientes sem entender exatamente o porquê. A taxa de Churn não acontece de repente, ela se desenvolve em silêncio, deixando rastros invisíveis no comportamento de consumo antes de se tornar uma perda real. 
         <br><br>
-        O projeto nasce como resposta a essa transformação nos padrões de consumo. Com base nos dados dos ecossistemas Olist e Telco, este dashboard interativo revela onde o risco de evasão está mais crítico, onde há maior potencial de recuperação de crédito e onde a estrutura de gastos aponta para novas demandas de inclusão.
+        Ao analisar o comportamento de milhares de consumidores, vemos que padrões se repetem. Alguns sinais existem e saber enxergá-los e interpretá-los é o que separa uma empresa que reage de uma empresa que antecipa.
         <br><br>
-        Mais do que um painel de dados, este projeto é uma <b>ferramenta de antecipação estratégica</b> — para gestores que precisam planejar políticas de retenção e para instituições que buscam transformar o risco em oportunidade de fidelização sustentável.
+        E é exatamente isso que este projeto propõe. Combinando dados reais dos ecossistemas de e-commerce e telecomunicações, nosso dashboard interativo revela quais clientes estão em risco de cancelamento, por que isso está acontecendo e onde a estrutura de gastos aponta para novas demandas de inclusão.
         </p>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown('<p class="section-title">O que o projeto revela</p>', unsafe_allow_html=True)
-    st.write("Ao cruzar três indicadores-chave — Recência, Frequência e Valor (RFV) — o dashboard constrói uma visão territorial e comportamental da evasão:")
+    st.write("A partir da análise do comportamento dos clientes, o dashboard entrega três camadas de inteligência:")
     
     col1, col2 = st.columns(2)
     with col1:
-        st.markdown("**Hotspots de Risco:** Segmentos com alta inatividade e baixo engajamento, onde a intervenção de crédito deve ser prioritária para evitar a perda total do cliente.")
-        st.markdown("**Oportunidades de Retenção:** Perfis com ticket médio elevado mas frequência em queda, onde o mercado ainda é fértil para campanhas de fidelização personalizadas.")
+        st.markdown("**Perfis de Risco:** clientes classificados em faixas de risco — Crítico, Alto, Médio e Baixo — com base em seu score de probabilidade de churn, permitindo priorizar ações de retenção.")
+        st.markdown("**Recomendações estratégicas:** para cada perfil de risco, o sistema sugere uma ação concreta, desde ofertas agressivas de retenção até campanhas de engajamento preventivo.")
     with col2:
-        st.markdown("**Score de Inclusão:** Uma métrica composta que sintetiza o comportamento financeiro para comparar perfis de forma objetiva, revelando onde há maior urgência de suporte.")
+        st.markdown("**Visão preditiva:**  um modelo de Machine Learning treinado para prever quais clientes estão prestes a cancelar, com base em frequência de compra, valor gasto e tempo de inatividade.")
 
     st.markdown('<p class="section-title">Onde isso impacta</p>', unsafe_allow_html=True)
-    st.write("1. **Gestão Estratégica:** Permite que empresas priorizem recursos de retenção com base em evidências preditivas.")
-    st.write("2. **Inclusão Financeira:** Identifica o momento exato de oferecer microcrédito ou tarifas sociais antes do churn.")
-    st.write("3. **Inovação em Dados:** Inspira soluções de vizinhança e serviços personalizados com base em perfis reais de consumo.")
+    st.write("1. **Gestão Estratégica:** Permite que empresas priorizem recursos de retenção com base em evidências preditivas sabendo exatamente quais clientes precisam de atenção imediata e qual abordagem usar..")
+    st.write("2. **Redução de perdas:** ao identificar clientes em risco antes do cancelamento, empresas podem agir preventivamente e evitar a perda de receita associada ao churn.")
+    st.write("3. **Decisões orientadas por dados:** transforma análises complexas de comportamento em recomendações simples e acionáveis, tornando a inteligência de dados acessível para times de negócio.")
 
 # =========================================================
 # CAPÍTULO 2: EDA E ESTATÍSTICA
 # =========================================================
 elif capitulo == "2. Diagnóstico Estatístico (EDA)":
-    st.title("Diagnóstico Estatístico e Comportamental")
+    st.title("Diagnóstico Estatístico")
     
     st.markdown('<div class="content-card">', unsafe_allow_html=True)
-    st.markdown('<p class="section-title">Análise de Recência e Ticket Médio</p>', unsafe_allow_html=True)
+    st.markdown('<p class="section-title">Análise estratégica</p>', unsafe_allow_html=True)
     
     data_eda = pd.DataFrame({
         'Dias_Inatividade': np.random.randint(1, 365, 200),
@@ -139,10 +140,10 @@ elif capitulo == "2. Diagnóstico Estatístico (EDA)":
     
     st.markdown("""
     <div class="story-analysis">
-        <b>Análise Estratégica:</b> Observamos que a "zona de silêncio" se inicia após os 60 dias de inatividade. 
-        Nesse ponto, o ticket médio sofre uma erosão de 40% antes do cancelamento definitivo. 
-        <b>O melhor caminho</b> para a empresa é acionar gatilhos de comunicação no 45º dia, pois os dados 
-        mostram que a probabilidade de reativação cai drasticamente após o segundo mês de silêncio.
+        <b>Análise Estratégica:</b> 
+        
+        O gráfico revela que clientes classificados como Críticos e Em Alerta estão distribuídos ao longo de toda a faixa de inatividade, independentemente do valor gasto. 
+        Isso indica que o tempo sem comprar é um sinal de risco mais determinante do que o quanto o cliente gastou, reforçando a necessidade de ações de retenção baseadas em comportamento temporal, não apenas em valor financeiro.
     </div>
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -165,11 +166,12 @@ elif capitulo == "3. Probabilidade Condicional":
     
     st.markdown("""
     <div class="story-analysis">
-        <b>Análise Estratégica:</b> A probabilidade condicional isolou o 'Contrato Mensal' como o maior preditor de risco (85%). 
-        Diferente do que se supunha, o valor da fatura não é o principal motivo da saída, mas sim a flexibilidade 
-        da desvinculação aliada à falta de suporte técnico. 
-        <b>A recomendação</b> é a conversão desses planos para modelos anuais com benefícios progressivos, 
-        estabilizando o fluxo de caixa e reduzindo a volatilidade da base.
+        <b>Análise Estratégica:</b> 
+        
+        A análise de probabilidade condicional revela que clientes com contrato mensal apresentam a maior probabilidade de churn (85%), seguidos por clientes sem suporte técnico (76%) e com fibra óptica (69%). 
+        Curiosamente, o boleto bancário apresenta probabilidade menor (52%), sugerindo que a forma de pagamento isolada não é o fator mais crítico.
+ 
+        A principal recomendação é incentivar a migração de contratos mensais para planos anuais, já que esse é o perfil com maior risco de cancelamento identificado nos dados.
     </div>
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -199,11 +201,14 @@ elif capitulo == "4. Inteligência Preditiva (ML)":
         
     st.markdown("""
     <div class="story-analysis">
-        <b>Análise Estratégica:</b> O modelo preditivo atingiu um recall de 81.5%, o que garante que estamos identificando 
-        a grande maioria dos clientes em risco real. A 'Recência' domina o peso da decisão algorítmica. 
-        <b>O melhor uso desta inteligência</b> é integrar o score de risco diretamente ao sistema de atendimento, 
-        permitindo que o operador visualize a probabilidade de saída em tempo real e ofereça condições de 
-        inclusão financeira, como microcrédito, para os perfis de alto risco.
+        <b>Análise Estratégica:</b>
+        
+       O modelo de Regressão Logística atingiu um recall de 81,5%, ou seja, consegue identificar corretamente mais de 8 em cada 10 clientes que realmente cancelariam. 
+       A variável mais determinante foi a Recência (tempo desde a última interação), seguida pelo tipo de contrato. 
+       Gasto mensal, serviço de streaming e idade tiveram impacto menor. 
+        
+       Isso reforça a recomendação central do projeto: 
+       empresas devem monitorar o tempo de inatividade dos clientes como principal sinal de alerta, e priorizar ações de retenção para quem possui contratos mensais.
     </div>
     """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
@@ -212,19 +217,24 @@ elif capitulo == "4. Inteligência Preditiva (ML)":
 # CAPÍTULO 5: CONCLUSÃO E EQUIPE
 # =========================================================
 elif capitulo == "5. Recomendações e Autoras":
-    st.title("Conclusão e Corpo Técnico")
+    st.title("Conclusão e Autoras")
     
     st.markdown("""
     <div class="content-card">
         <p style="font-size: 1.1rem;">
-        A Decision Intelligence aplicada a este projeto transforma dados em decisões de retenção e estatísticas em histórias de inclusão. 
-        Este sistema permite enxergar o risco financeiro que está por vir — e decidir como agir agora para preservar a base de clientes.
+        A Decisão Inteligente aplicada neste projeto transforma dados de comportamento em decisões concretas de retenção.
+        Com um modelo preditivo capaz de identificar mais de 8 em cada 10 clientes em risco, um score de churn individualizado e recomendações estratégicas por perfil, este sistema oferece às empresas algo valioso: a capacidade de agir antes que o cancelamento aconteça.
+        
+        Os dados revelaram achados importantes: o tempo de inatividade é o sinal mais crítico de risco, clientes com contrato mensal são os mais vulneráveis ao cancelamento, e a probabilidade de churn pouco varia com o valor gasto, o que significa que nenhum perfil de cliente está automaticamente protegido apenas por gastar mais.
+        
+        Mais do que uma análise de dados, este projeto é uma ferramenta de antecipação que converte padrões invisíveis de comportamento em ações visíveis e planejamentos de longo prazo
+
         </p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown('<p class="section-title">Equipe de Desenvolvimento - Grupo 8</p>', unsafe_allow_html=True)
-    equipe = ["Barbara", "Lauren Oliveira", "Leide Dias", "Maria Clara Fagundes", "Naida Martins"]
+    equipe = ["Barbara Andrade", "Lauren Oliveira", "Leide Dias", "Maria Clara Fagundes", "Maida Martins"]
     c1, c2, c3, c4, c5 = st.columns(5)
     for i, nome in enumerate(equipe):
         with [c1, c2, c3, c4, c5][i]:
