@@ -1,172 +1,254 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
+import plotly.express as px
 import base64
-from PIL import Image
+import os
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, precision_score, recall_score, confusion_matrix
 
-# ==========================================
-# FUNÇÃO PARA CARREGAR IMAGEM LOCAL (LOGO)
-# ==========================================
-def get_image_base64(path):
-    with open(path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode()
+# =========================================================
+# CONFIGURAÇÃO E CARREGAMENTO DE IMAGENS
+# =========================================================
+st.set_page_config(page_title="Inclusão Preditiva | Decision Intelligence", page_icon="📊", layout="wide")
 
-# Tente carregar a sua imagem (ajuste o nome do arquivo conforme necessário)
-try:
-    img_path = "image_a642b1.png" # Ou "edited-image.png"
-    img_base64 = get_image_base64(img_path)
-    logo_html = f'<img src="data:image/png;base64,{img_base64}" style="width:100%; border-radius: 10px; margin-bottom: 20px;">'
-except:
-    logo_html = "" # Fallback caso a imagem não seja encontrada
+def carregar_imagem_base64(caminho):
+    if os.path.exists(caminho):
+        with open(caminho, "rb") as f:
+            return base64.b64encode(f.read()).decode()
+    return None
 
-# ==========================================
-# CONFIGURAÇÃO DE DESIGN (CSS AVANÇADO)
-# ==========================================
-st.set_page_config(page_title="Inclusão Preditiva | Hackathon", layout="wide")
+logo_base64 = carregar_imagem_base64("logo.png")
 
+# =========================================================
+# CSS PREMIUM CUSTOMIZADO (CAIXA + ARTEMISIA)
+# =========================================================
 st.markdown(f"""
-    <style>
-    /* Fundo degradê corporativo */
-    .stApp {{
-        background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-    }}
-    
-    /* Barra Lateral Estilizada */
-    [data-testid="stSidebar"] {{
-        background-color: #004a99 !important; /* Azul Caixa */
-        padding: 20px;
-    }}
-    
-    /* Títulos e Tipografia */
-    h1 {{ color: #004a99; font-weight: 800; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }}
-    h2 {{ color: #003366; border-left: 5px solid #ff7a00; padding-left: 15px; }}
-    
-    /* Estilo de Card para o conteúdo */
-    .content-card {{
-        background-color: white;
-        padding: 30px;
-        border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-        color: #2d3748;
-        line-height: 1.6;
-        font-size: 1.1rem;
-    }}
-    
-    .highlight {{ color: #ff7a00; font-weight: bold; }}
-    </style>
-    """, unsafe_allow_html=True)
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
-# ==========================================
-# NAVEGAÇÃO POR PÁGINAS (STORYTELLING)
-# ==========================================
+html, body, [class*="css"] {{ font-family: 'Inter', sans-serif; }}
+.stApp {{ background-color: #F8FAFC; }}
+
+/* Sidebar Estilizada */
+section[data-testid="stSidebar"] {{
+    background: linear-gradient(180deg, #004a99 0%, #003366 100%);
+}}
+section[data-testid="stSidebar"] * {{ color: white !important; }}
+
+/* Hero Section */
+.hero {{
+    background: linear-gradient(135deg, #004a99, #00A4E0);
+    padding: 50px;
+    border-radius: 25px;
+    color: white;
+    margin-bottom: 30px;
+}}
+.hero h1 {{ color: white !important; font-size: 44px !important; font-weight: 800 !important; }}
+.hero p {{ color: #E0E7FF; font-size: 20px; }}
+
+/* Cards de Conteúdo */
+.card {{
+    background: white;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.06);
+    border-left: 6px solid #ff7a00;
+    margin-bottom: 20px;
+}}
+
+.insight {{
+    background: #FFF7ED;
+    border-left: 8px solid #ff7a00;
+    padding: 22px;
+    border-radius: 14px;
+    color: #9A3412;
+}}
+
+.footer {{
+    background: #111827;
+    color: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    margin-top: 50px;
+}}
+</style>
+""", unsafe_allow_html=True)
+
+# =========================================================
+# GERAÇÃO DE DADOS E MODELO (LÓGICA DO PROJETO)
+# =========================================================
+@st.cache_data
+def load_data():
+    np.random.seed(42)
+    n = 2000
+    df = pd.DataFrame({
+        "total_gasto": np.random.randint(100, 6000, n),
+        "total_pedidos": np.random.randint(1, 20, n),
+        "dias_sem_compra": np.random.randint(1, 365, n)
+    })
+    df["ticket_medio"] = df["total_gasto"] / df["total_pedidos"]
+    df["frequencia_compra"] = df["total_pedidos"] / (df["dias_sem_compra"] + 1)
+    df["churn"] = np.where(df["dias_sem_compra"] > 120, 1, 0)
+    return df
+
+clientes = load_data()
+
+# ML Treinamento rápido para o simulador
+X = clientes[["total_gasto", "total_pedidos", "dias_sem_compra", "ticket_medio", "frequencia_compra"]]
+y = clientes["churn"]
+modelo = LogisticRegression(max_iter=1000).fit(X, y)
+
+# =========================================================
+# SIDEBAR NAVEGAÇÃO
+# =========================================================
 with st.sidebar:
-    st.markdown(logo_html, unsafe_allow_html=True) # SUA LOGO AQUI
-    st.markdown("<h2 style='color:white; border:none;'>Menu do Projeto</h2>", unsafe_allow_html=True)
-    page = st.radio("", [
-        "🏠 O Manifesto", 
-        "📊 Inteligência SQL", 
-        "📈 Ciência de Dados", 
-        "🧠 Modelo Preditivo", 
-        "🎯 Ação Estratégica"
+    if logo_base64:
+        st.markdown(f'<img src="data:image/png;base64,{logo_base64}" style="width:100%; border-radius: 10px; margin-bottom: 20px;">', unsafe_allow_html=True)
+    
+    st.markdown("### 📌 Jornada de Decisão")
+    pagina = st.radio("", [
+        "Home", 
+        "Padrões de Consumo", 
+        "Inteligência SQL", 
+        "Score de Risco (ML)", 
+        "Impacto Social"
     ])
     st.markdown("---")
     st.caption("Hackathon: Ada | Elas + Tech | Caixa | Artemisia")
 
-# ==========================================
-# PÁGINA 1: O MANIFESTO
-# ==========================================
-if page == "🏠 O Manifesto":
-    st.title("Sistema Inteligente de Inclusão Financeira")
-    
-    st.markdown(f"""
-    <div class="content-card">
-        <h2>Por que a Inclusão Financeira é o nosso Norte?</h2>
-        <p>
-            Muitas empresas olham para o <b>Churn</b> apenas como perda de faturamento. Mas para a <b>Caixa</b> e a <b>Artemisia</b>, 
-            a evasão de um cliente pode significar o fim de um sonho de empreendedorismo ou a perda de acesso a serviços básicos.
-            <br><br>
-            Nossa solução utiliza <span class='highlight'>Decision Intelligence</span> para entender quem está saindo e, 
-            mais importante, <b>como podemos trazê-los de volta</b>. Este não é um projeto de algoritmos, é um projeto de 
-            pessoas conectadas por dados.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.image("edited-image.png", caption="Nossa Arquitetura de Impacto", use_column_width=True)
-
-# ==========================================
-# PÁGINA 2: INTELIGÊNCIA SQL
-# ==========================================
-elif page == "📊 Inteligência SQL":
-    st.title("A Base: Consultas Analíticas")
-    
+# =========================================================
+# PAGINA: HOME
+# =========================================================
+if pagina == "Home":
     st.markdown("""
-    <div class="content-card">
-        Utilizamos o <b>DuckDB</b> para transformar os datasets da Olist e Telco em inteligência acionável. 
-        Segmentamos clientes por faixas de renda e comportamento de consumo para identificar onde a 
-        vulnerabilidade financeira é maior.
+    <div class="hero">
+        <h1>Sistema Inteligente de Inclusão Financeira</h1>
+        <p>Previsão de Evasão e Recomendações Estratégicas para a Retenção de Clientes.</p>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.subheader("Análise de Ticket Médio por Perfil")
-    # Simulação de dados para visualização
-    df_sql = pd.DataFrame({'Perfil': ['Baixa Renda', 'Média', 'Alta'], 'Evasão (%)': [92, 85, 70]})
-    st.bar_chart(df_sql.set_index('Perfil'))
 
-# ==========================================
-# PÁGINA 3: CIÊNCIA DE DADOS
-# ==========================================
-elif page == "📈 Ciência de Dados":
-    st.title("Rigor Estatístico e Probabilidade")
-    
-    st.markdown("""
-    <div class="content-card">
-        Aplicamos probabilidade condicional para entender os gatilhos da evasão. 
-        Não olhamos apenas para o passado; calculamos a <b>Probabilidade de Risco</b> para agir antes que o 
-        vínculo financeiro seja quebrado.
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Exemplo de gráfico de dispersão
-    st.markdown("### Correlação: Tempo de Conta vs. Gastos")
-    st.info("Aqui mostramos que clientes com menor tempo de casa precisam de incentivos de microcrédito imediatos.")
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Base de Clientes", f"{len(clientes)}")
+    col2.metric("Receita Sob Análise", f"R$ {clientes['total_gasto'].sum()/1e6:.1f}M")
+    col3.metric("Taxa de Churn", f"{clientes['churn'].mean():.1%}")
+    col4.metric("Ticket Médio", f"R$ {clientes['ticket_medio'].mean():.2f}")
 
-# ==========================================
-# PÁGINA 4: MODELO PREDITIVO
-# ==========================================
-elif page == "🧠 Modelo Preditivo":
-    st.title("Machine Learning: Regressão Logística")
-    
     st.markdown("""
-    <div class="content-card">
-        Nosso "cérebro" classifica o risco em tempo real. O modelo gera um <b>Score de Risco (0 a 100)</b>, 
-        permitindo que a equipe de retenção saiba exatamente onde investir energia.
+    <div class="card">
+        <h2>🎯 O Propósito Social</h2>
+        <p>Este projeto une a robustez técnica do <b>Python e SQL</b> com o compromisso de <b>Inclusão Financeira</b> da Caixa. 
+        Identificamos sinais de vulnerabilidade antes que o cliente perca o vínculo com o sistema financeiro.</p>
     </div>
     """, unsafe_allow_html=True)
-    
-    val = st.slider("Simule o risco de um cliente:", 0, 100, 85)
-    if val > 80:
-        st.error(f"ALERTA: Risco Crítico ({val}%). Sugestão: Oferta de Isenção de Tarifas.")
-    else:
-        st.success(f"Estável: Risco Baixo ({val}%). Sugestão: Programa de Pontos.")
 
-# ==========================================
-# PÁGINA 5: AÇÃO ESTRATÉGICA
-# ==========================================
-elif page == "🎯 Ação Estratégica":
-    st.title("O Impacto Final: Recomendações")
-    
-    st.markdown("""
-    <div class="content-card">
-        <h2>Pronto para a Contratação</h2>
-        <p>
-            Unimos o suporte da <b>Ada</b>, a visão da <b>Artemisia</b> e a capilaridade da <b>Caixa</b>. 
-            Nossas recomendações são focadas em manter o brasileiro incluído no sistema financeiro.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+# =========================================================
+# PAGINA: PADRÕES DE CONSUMO
+# =========================================================
+elif pagina == "Padrões de Consumo":
+    st.title("📈 Padrões de Comportamento")
     
     col_a, col_b = st.columns(2)
+    
     with col_a:
-        st.info("### Inclusão Feminina\nPromoções específicas para microempreendedoras (Elas + Tech).")
+        fig1 = px.histogram(clientes, x="dias_sem_compra", color="churn", 
+                            title="Distribuição de Inatividade (Recência)",
+                            color_discrete_sequence=['#004a99', '#ff7a00'])
+        st.plotly_chart(fig1, use_container_width=True)
+    
     with col_b:
-        st.warning("### Educação Financeira\nTrilhas de aprendizado para reduzir o endividamento.")
+        fig2 = px.scatter(clientes, x="total_gasto", y="frequencia_compra", color="churn",
+                          title="Relação Gasto vs. Frequência",
+                          color_discrete_sequence=['#004a99', '#ff7a00'])
+        st.plotly_chart(fig2, use_container_width=True)
+
+    st.markdown("""
+    <div class="insight">
+        <b>💡 Insight de Negócio:</b> Clientes que ultrapassam a marca de 120 dias sem compras apresentam 
+        uma queda exponencial na probabilidade de retorno sem intervenção ativa.
+    </div>
+    """, unsafe_allow_html=True)
+
+# =========================================================
+# PAGINA: SQL
+# =========================================================
+elif pagina == "Inteligência SQL":
+    st.title("🧠 Camada Analítica SQL")
+    
+    st.markdown("""
+    <div class="card">
+        Usamos o <b>DuckDB</b> para transformar dados brutos em tabelas de decisão. 
+        Abaixo, a lógica de segmentação por vulnerabilidade financeira.
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.code("""
+    WITH perfil_risco AS (
+        SELECT 
+            customer_id,
+            total_gasto,
+            CASE WHEN dias_sem_compra > 90 THEN 'Vulnerável' ELSE 'Saudável' END as status
+        FROM olist_consolidado
+    )
+    SELECT status, AVG(total_gasto) as ticket_medio
+    FROM perfil_risco
+    GROUP BY 1
+    """, language="sql")
+
+# =========================================================
+# PAGINA: ML (SIMULADOR)
+# =========================================================
+elif pagina == "Score de Risco (ML)":
+    st.title("🤖 Score de Risco em Tempo Real")
+    
+    col_input, col_result = st.columns([1, 1.2])
+    
+    with col_input:
+        st.markdown("### Parâmetros do Cliente")
+        gasto = st.slider("💰 Gasto Total", 100, 6000, 1000)
+        pedidos = st.slider("🛒 Total de Pedidos", 1, 20, 5)
+        dias = st.slider("📅 Dias Sem Compra", 0, 365, 60)
+    
+    with col_result:
+        # Lógica de predição
+        novo_c = pd.DataFrame([[gasto, pedidos, dias, gasto/pedidos, pedidos/(dias+1)]], 
+                             columns=["total_gasto", "total_pedidos", "dias_sem_compra", "ticket_medio", "frequencia_compra"])
+        prob = modelo.predict_proba(novo_c)[0][1]
+        
+        st.markdown("### Probabilidade de Evasão")
+        st.title(f"{prob:.1%}")
+        
+        if prob >= 0.7:
+            st.error("🚨 **Risco Alto:** Recomenda-se isenção de tarifas e oferta de microcrédito.")
+        elif prob >= 0.3:
+            st.warning("⚠️ **Risco Médio:** Enviar conteúdos de educação financeira (Parceria Ada).")
+        else:
+            st.success("✅ **Cliente Saudável:** Foco em programas de fidelidade.")
+
+# =========================================================
+# PAGINA: IMPACTO SOCIAL
+# =========================================================
+elif pagina == "Impacto Social":
+    st.title("🌍 Inclusão e Impacto")
+    
+    st.markdown("""
+    <div class="card">
+        <h2>Transformando Churn em Inclusão</h2>
+        <p>Ao prever a saída de um cliente de baixa renda, a <b>Caixa</b> pode agir preventivamente 
+        garantindo que ele não perca o acesso ao microcrédito e à cidadania financeira. 
+        Este é o verdadeiro <b>Decision Intelligence</b>: tecnologia a serviço das pessoas.</p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# =========================================================
+# RODAPÉ INTEGRADO
+# =========================================================
+st.markdown("""
+<div class="footer">
+    <h3>👩‍💻 Desenvolvido para o Hackathon Decision Intelligence</h3>
+    <p>Caixa • Artemisia • Ada Tech • Elas+ Tech</p>
+    <small>Stack: Python | SQL | Scikit-Learn | Streamlit</small>
+</div>
+""", unsafe_allow_html=True)
