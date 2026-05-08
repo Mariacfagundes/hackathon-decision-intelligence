@@ -125,7 +125,7 @@ if capitulo == "1. Contexto e Intenção":
         """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.markdown("### 🔍 O que o projeto revela")
+    st.markdown("###  O que o projeto revela")
     col_r1, col_r2, col_r3 = st.columns(3)
     with col_r1:
         st.markdown('<div class="risk-card border-red"><h4 style="color:#EF4444; margin-top:0;">📊 Perfis de Risco</h4><p style="font-size: 0.95rem; color: #475569;">clientes classificados em faixas de risco — Crítico, Alto, Médio e Baixo — com base em seu score de probabilidade de churn, permitindo priorizar ações de retenção.</p></div>', unsafe_allow_html=True)
@@ -134,7 +134,7 @@ if capitulo == "1. Contexto e Intenção":
     with col_r3:
         st.markdown('<div class="risk-card border-blue"><h4 style="color:#3B82F6; margin-top:0;">🔮 Visão preditiva</h4><p style="font-size: 0.95rem; color: #475569;">um modelo de Machine Learning treinado para prever quais clientes estão prestes a cancelar, com base em frequência de compra, valor gasto e tempo de inatividade.</p></div>', unsafe_allow_html=True)
 
-    st.markdown("<br>### ⭐ Onde isso impacta", unsafe_allow_html=True)
+    st.markdown("<br>###  Onde isso impacta", unsafe_allow_html=True)
     col_i1, col_i2, col_i3 = st.columns(3)
     with col_i1:
         st.markdown('<div class="impact-card"><div class="number-circle">01</div><div><b>Gestão Estratégica</b><br><small>permite que empresas priorizem recursos de retenção com base em evidências preditivas...</small></div></div>', unsafe_allow_html=True)
