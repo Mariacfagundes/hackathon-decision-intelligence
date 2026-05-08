@@ -141,15 +141,15 @@ elif capitulo == "2. Diagnóstico Estatístico (EDA)":
     st.plotly_chart(fig_eda, use_container_width=True)
     
     st.markdown("""
-    <div class="story-analysis">
-        <b>Análise Estratégica:</b> 
-        
+     <div style="font-size: 1.1rem; margin-top: 10px;">
+        <b style="color: #31333F;">Análise Estratégica:</b> 
+        <p>
         O gráfico revela que clientes classificados como Críticos e Em Alerta estão distribuídos ao longo de toda a faixa de inatividade, independentemente do valor gasto. 
         Isso indica que o tempo sem comprar é um sinal de risco mais determinante do que o quanto o cliente gastou, reforçando a necessidade de ações de retenção baseadas em comportamento temporal, não apenas em valor financeiro.
+        </p>
     </div>
     """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
+   
 # =========================================================
 # CAPÍTULO 3: PROBABILIDADE CONDICIONAL
 # =========================================================
