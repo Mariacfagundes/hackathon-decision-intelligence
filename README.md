@@ -1,14 +1,4 @@
-# 🧠 Decision Intelligence — Previsão de Churn e Recomendações Estratégicas de Retenção
-
-<div align="center">
-
-![Python](https://img.shields.io/badge/Python-3.10-blue?style=for-the-badge&logo=python)
-![Pandas](https://img.shields.io/badge/Pandas-Data%20Analysis-150458?style=for-the-badge&logo=pandas)
-![Scikit-learn](https://img.shields.io/badge/Scikit--learn-ML-F7931E?style=for-the-badge&logo=scikit-learn)
-![DuckDB](https://img.shields.io/badge/DuckDB-SQL-yellow?style=for-the-badge)
-![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?style=for-the-badge&logo=streamlit)
-
-</div>
+# Decision Intelligence — Previsão de Churn e Recomendações Estratégicas de Retenção
 
 ---
 
@@ -16,7 +6,7 @@
 
 ---
 
-## 📌 Sobre o Projeto
+## Sobre o Projeto
 
 Este projeto propõe uma solução completa de **Decision Intelligence** para análise de perfil financeiro e previsão de evasão de clientes (churn). A partir de dados reais dos ecossistemas de **e-commerce** e **telecomunicações**, desenvolvemos um sistema capaz de identificar quais clientes estão em risco de cancelamento, classificá-los por nível de risco e recomendar ações estratégicas de retenção.
 
@@ -24,7 +14,7 @@ Quando um cliente para de comprar, raramente é do nada. Os sinais estão nos da
 
 ---
 
-## 🎯 Objetivos
+## Objetivos
 
 - Prever o risco de churn de clientes com base em comportamento de consumo
 - Analisar padrões financeiros e de frequência de compra
@@ -35,7 +25,7 @@ Quando um cliente para de comprar, raramente é do nada. Os sinais estão nos da
 
 ---
 
-## 🏗️ Arquitetura da Solução
+## Arquitetura da Solução
 
 ```
 Datasets CSV (Olist + Telco)
@@ -53,7 +43,7 @@ Streamlit — Dashboard interativo com recomendações
 
 ---
 
-## 🗂️ Estrutura dos Dados
+## Estrutura dos Dados
 
 ### Dataset Olist (E-commerce Brasileiro)
 Utilizado para análise de comportamento de consumo e criação da variável churn com base em inatividade de compra (> 90 dias).
@@ -67,16 +57,16 @@ Utilizado para análise de comportamento de consumo e criação da variável chu
 | `olist_products_dataset.csv` | Dados dos produtos |
 | `product_category_name_translation.csv` | Tradução das categorias |
 
-🔗 [Dataset Olist no Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
+[Dataset Olist no Kaggle](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce)
 
 ### Dataset Telco Customer Churn
 Utilizado para análise de churn em contexto de telecomunicações, com variáveis ricas como tipo de contrato, serviços contratados e tempo de permanência.
 
-🔗 [Dataset Telco no Kaggle](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+[Dataset Telco no Kaggle](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
 
 ---
 
-## 🧹 Limpeza e Tratamento dos Dados
+## Limpeza e Tratamento dos Dados
 
 - Tratamento de valores nulos
 - Conversão de variáveis numéricas
@@ -88,7 +78,7 @@ Utilizado para análise de churn em contexto de telecomunicações, com variáve
 
 ---
 
-## 🗃️ SQL na Prática
+## SQL na Prática
 
 Foram utilizadas consultas SQL avançadas com **DuckDB** para geração de insights analíticos e segmentações estratégicas, incluindo:
 
@@ -103,7 +93,7 @@ Foram utilizadas consultas SQL avançadas com **DuckDB** para geração de insig
 
 ---
 
-## 📊 Estatística e Análise Exploratória
+## Estatística e Análise Exploratória
 
 Foi realizada análise estatística descritiva completa para identificação de padrões de comportamento, contemplando:
 
@@ -118,7 +108,7 @@ Foi realizada análise estatística descritiva completa para identificação de 
 
 ---
 
-## 🎲 Probabilidade Condicional
+## Probabilidade Condicional
 
 Foram aplicadas análises de probabilidade condicional para identificar segmentos com maior risco de evasão:
 
@@ -133,7 +123,7 @@ Foram aplicadas análises de probabilidade condicional para identificar segmento
 
 ---
 
-## 🤖 Machine Learning
+## Machine Learning
 
 Foi desenvolvido um modelo preditivo de **Regressão Logística** para previsão de churn, com as seguintes etapas:
 
@@ -164,7 +154,7 @@ A **Recência** (tempo desde a última interação) foi a variável mais determi
 
 ---
 
-## 📱 Dashboard Streamlit
+## Dashboard Streamlit
 
 O dashboard foi desenvolvido em Streamlit com visualizações interativas, apresentando:
 
@@ -175,13 +165,13 @@ O dashboard foi desenvolvido em Streamlit com visualizações interativas, apres
 - Importância das variáveis do modelo
 - Recomendações estratégicas de retenção
 
-🔗 [Acessar Dashboard](#) *(link a ser inserido)*
+[Acessar Dashboard](#) *(link a ser inserido)*
 
 ---
 
 
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 | Tecnologia | Uso |
 |---|---|
@@ -195,7 +185,7 @@ O dashboard foi desenvolvido em Streamlit com visualizações interativas, apres
 
 ---
 
-## 👩‍💻 Time
+## Time
 
 Projeto desenvolvido com 💜 pelo **Grupo 8** da Hackathon Elas+ Tech:
 
@@ -209,7 +199,7 @@ Projeto desenvolvido com 💜 pelo **Grupo 8** da Hackathon Elas+ Tech:
 
 ---
 
-## 🏆 Sobre a Hackathon
+## Sobre a Hackathon
 
 Este projeto foi desenvolvido como trabalho de conclusão do curso de **Ciência de Dados** da **Ada Tech**, no contexto da **Hackathon Elas+ Tech**, realizada em parceria com a **Caixa Econômica Federal** e a **Artemísia**.
 
