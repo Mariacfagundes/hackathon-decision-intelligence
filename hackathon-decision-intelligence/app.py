@@ -9,7 +9,7 @@ from sklearn.linear_model import LogisticRegression
 # =========================================================
 # 1. CONFIGURAÇÃO E CSS (ESTILO LIVRO PREMIUM)
 # =========================================================
-st.set_page_config(page_title="Hackaton de Dados - Grupo 8", page_icon="📖", layout="wide")
+st.set_page_config(page_title="Hackaton de Dados, page_icon="📖", layout="wide")
 
 def carregar_imagem_base64(caminho):
     if os.path.exists(caminho):
